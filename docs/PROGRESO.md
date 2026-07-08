@@ -70,14 +70,23 @@
   limpio. `next build` exitoso.
 - `.claude/settings.json` movido de la raíz a su ubicación correcta.
 
-### Por hacer (bloqueado por credenciales — ver arriba)
-- `supabase link` + `supabase db push` (migración aún NO aplicada al
-  proyecto remoto; signup funcionará pero sin perfil hasta aplicar).
-- `get_advisors` post-migración.
+### Migraciones remotas — APLICADAS (2026-07-08, vía MCP como excepción)
+- `20260708184346_foundation` y `20260708184443_security_hardening`
+  aplicadas al proyecto remoto. Tablas verificadas con RLS activo.
+- `get_advisors` corrido: hardening aplicado (search_path fijo,
+  revokes de PUBLIC/anon, políticas SELECT consolidadas). 4 WARNs
+  restantes aceptados como intencionales (ver DECISIONES.md #11).
+- Archivos locales renombrados a versiones remotas para paridad con CLI.
+
+### Por hacer
+- `supabase link` cuando existan `SUPABASE_ACCESS_TOKEN` y
+  `SUPABASE_DB_PASSWORD` reales en `.env` (siguen placeholder); desde ahí
+  todas las migraciones van por CLI (`db push`).
+- `supabase gen types` para reemplazar tipos manuales.
 - OAuth Google: habilitar proveedor en dashboard Supabase (requiere
   credenciales de Google Cloud — humano).
-- Siguiente: sistema de roles granular en UI, layout de dashboard con
-  navegación, página de creación de tenant (usa `create_tenant()`).
+- Siguiente: página de creación de tenant (usa `create_tenant()`), layout
+  de dashboard con navegación, sistema de roles granular en UI.
 
 ## Deuda técnica
 

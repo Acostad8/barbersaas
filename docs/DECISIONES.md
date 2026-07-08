@@ -35,3 +35,17 @@ fecha, decisión, alternativas descartadas, razón.
    se pueda correr `supabase gen types` contra el proyecto (bloqueado por
    credenciales). Al desbloquear, se reemplazan por generados. Nota: filas
    como `type` alias, no `interface` (supabase-js exige index signature).
+10. **Migraciones aplicadas vía MCP como excepción de bootstrap
+    (2026-07-08)**: el usuario autorizó aplicar migraciones pero
+    `SUPABASE_ACCESS_TOKEN`/`SUPABASE_DB_PASSWORD` seguían como
+    placeholders → CLI bloqueada. Se aplicó `foundation` y
+    `security_hardening` vía MCP `apply_migration` (una sola vez, no
+    mecanismo recurrente). Los archivos locales se renombraron a las
+    versiones que registró el remoto (`20260708184346`, `20260708184443`)
+    para que `supabase migration list` no diverja cuando la CLI se
+    enlace. Próximas migraciones: CLI (`db push`) apenas existan
+    credenciales.
+11. **Warnings de advisors aceptados**: `create_tenant`, `is_member_of`,
+    `has_role`, `shares_tenant_with` ejecutables por `authenticated` es
+    intencional — las políticas RLS los evalúan como el rol consultante y
+    `create_tenant` es el RPC de onboarding. `anon` y `PUBLIC` revocados.
