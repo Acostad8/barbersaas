@@ -10,7 +10,7 @@
 | 0 | Bootstrap infraestructura | ⚠️ parcial (ver "Pendiente de validar humana") |
 | 1 | Fundación (scaffold, esquema multi-tenant, auth, roles, RLS) | ✅ completa (pendientes menores abajo) |
 | 2 | Gestión de barbería y sucursales | ✅ completa |
-| 3 | Clientes | ⬜ |
+| 3 | Clientes | ✅ completa (historial/métricas llegan con agenda/POS) |
 | 4 | Servicios y empleados | ⬜ |
 | 5 | Agenda inteligente | ⬜ |
 | 6 | Reservas online | ⬜ |
@@ -133,11 +133,36 @@
 - Zod schemas de formularios sin `.transform()` (rompe generics de RHF
   resolver); conversión vacío→null en actions con `lib/forms.ts`.
 
-## Fase 3 — Clientes (siguiente)
+## Fase 3 — Clientes (COMPLETA 2026-07-08)
 
-Por arrancar: tabla `clients` (perfil, notas, etiquetas, cumpleaños,
-consentimientos, referidos), historial y métricas (frecuencia, gasto
-total) llegan con POS/agenda en fases posteriores.
+### Hecho
+- Migración `20260708195137_clients` (vía MCP, misma excepción):
+  - Tabla `clients`: perfil, tags[], preferences JSONB, referred_by
+    (self-FK), rating 1-5, consentimientos marketing/WhatsApp,
+    `consent_updated_at` estampado por trigger al cambiar consents.
+  - Email único por tenant case-insensitive (índice parcial), pg_trgm
+    GIN en full_name, GIN en tags.
+  - RLS: ver = staff (admin/manager/receptionist/barber); crear/editar =
+    admin/manager/receptionist; borrar = admin/manager. Rol `client` sin
+    acceso a otros clientes.
+- `/dashboard/clientes`: listado paginado (20/pág) con búsqueda
+  nombre/teléfono/correo (ilike), dialog crear/editar (cumpleaños, tags
+  por coma con dedupe, calificación estrellas, consentimientos, notas),
+  activar/desactivar. Gates `clients:view` / `clients:manage`.
+- Tests 51/51. Build OK (10 rutas). Smoke `scripts/smoke-clients.mjs`:
+  trigger de consent, email duplicado rechazado, barbero ve/no crea,
+  aislamiento entre tenants. Todo verde.
+
+### Pendiente para fases posteriores
+- Historial de visitas, frecuencia, gasto total, servicios favoritos:
+  derivados de agenda (F5) y POS (F8).
+- `referred_by` sin UI aún (se conecta en marketing/fidelización F10).
+
+## Fase 4 — Servicios y empleados (siguiente)
+
+Por arrancar: categorías de servicios, duración, precio, comisión,
+impuestos; paquetes/promos; ficha de empleado (especialidades, horarios,
+vacaciones, comisiones).
 
 ## Deuda técnica
 

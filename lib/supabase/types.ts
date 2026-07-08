@@ -59,6 +59,26 @@ export type Membership = {
   updated_at: string;
 };
 
+export type Client = {
+  id: string;
+  tenant_id: string;
+  full_name: string;
+  email: string | null;
+  phone: string | null;
+  birthdate: string | null;
+  notes: string | null;
+  tags: string[];
+  preferences: Record<string, unknown>;
+  referred_by: string | null;
+  rating: number | null;
+  marketing_consent: boolean;
+  whatsapp_consent: boolean;
+  consent_updated_at: string | null;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
 export type Branch = {
   id: string;
   tenant_id: string;
@@ -112,6 +132,27 @@ export type Database = {
             columns: ["branch_id"];
             isOneToOne: false;
             referencedRelation: "branches";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      clients: {
+        Row: Client;
+        Insert: Pick<Client, "tenant_id" | "full_name"> & Partial<Client>;
+        Update: Partial<Client>;
+        Relationships: [
+          {
+            foreignKeyName: "clients_tenant_id_fkey";
+            columns: ["tenant_id"];
+            isOneToOne: false;
+            referencedRelation: "tenants";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "clients_referred_by_fkey";
+            columns: ["referred_by"];
+            isOneToOne: false;
+            referencedRelation: "clients";
             referencedColumns: ["id"];
           },
         ];
