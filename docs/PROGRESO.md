@@ -8,7 +8,7 @@
 | Fase | Módulo | Estado |
 |------|--------|--------|
 | 0 | Bootstrap infraestructura | ⚠️ parcial (ver "Pendiente de validar humana") |
-| 1 | Fundación (scaffold, esquema multi-tenant, auth, roles, RLS) | 🔄 en progreso |
+| 1 | Fundación (scaffold, esquema multi-tenant, auth, roles, RLS) | ✅ completa (pendientes menores abajo) |
 | 2 | Gestión de barbería y sucursales | ⬜ |
 | 3 | Clientes | ⬜ |
 | 4 | Servicios y empleados | ⬜ |
@@ -46,7 +46,7 @@
 4. `.mcp.json` local también tiene placeholders (el MCP usado en sesión es
    el conector de claude.ai, funciona independiente).
 
-## Fase 1 — Fundación (en progreso)
+## Fase 1 — Fundación (COMPLETA 2026-07-08)
 
 ### Hecho
 - Scaffold Next.js 16.2 (App Router, Turbopack), TS estricto reforzado
@@ -78,15 +78,33 @@
   restantes aceptados como intencionales (ver DECISIONES.md #11).
 - Archivos locales renombrados a versiones remotas para paridad con CLI.
 
-### Por hacer
+### Completado además (cierre de fase)
+- Feature tenants: schema Zod (name+slug con `slugify` para acentos/ñ),
+  server action con RPC `create_tenant`, formulario onboarding con
+  auto-slug, redirect dashboard↔onboarding según membresías.
+- Layout dashboard: sidebar navegación, email usuario, signout.
+- `lib/auth/permissions.ts`: matriz rol→permisos granulares (18 permisos,
+  6 roles) con tests exhaustivos.
+- Tests 26/26, lint limpio, `tsc` limpio, build OK (7 rutas).
+- Smoke tests remotos: `scripts/smoke-auth.mjs` (trigger perfil + cascade)
+  y `scripts/smoke-tenant.mjs` (create_tenant, membresía admin,
+  aislamiento RLS entre usuarios, slug duplicado rechazado). Ambos pasan.
+
+### Pendientes menores (no bloquean Fase 2)
 - `supabase link` cuando existan `SUPABASE_ACCESS_TOKEN` y
   `SUPABASE_DB_PASSWORD` reales en `.env` (siguen placeholder); desde ahí
   todas las migraciones van por CLI (`db push`).
 - `supabase gen types` para reemplazar tipos manuales.
 - OAuth Google: habilitar proveedor en dashboard Supabase (requiere
   credenciales de Google Cloud — humano).
-- Siguiente: página de creación de tenant (usa `create_tenant()`), layout
-  de dashboard con navegación, sistema de roles granular en UI.
+- Rutas de navegación (agenda/clientes/servicios/configuración) son
+  placeholders — se implementan en sus fases.
+
+## Fase 2 — Gestión de barbería y sucursales (siguiente)
+
+Por arrancar: datos generales del tenant (logo, banner, horarios,
+ubicación, redes), tabla `branches` con horarios propios, empleados por
+sede. Migraciones por CLI si hay credenciales, si no documentar pausa.
 
 ## Deuda técnica
 
