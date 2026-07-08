@@ -9,7 +9,7 @@
 |------|--------|--------|
 | 0 | Bootstrap infraestructura | ⚠️ parcial (ver "Pendiente de validar humana") |
 | 1 | Fundación (scaffold, esquema multi-tenant, auth, roles, RLS) | ✅ completa (pendientes menores abajo) |
-| 2 | Gestión de barbería y sucursales | ⬜ |
+| 2 | Gestión de barbería y sucursales | ✅ completa |
 | 3 | Clientes | ⬜ |
 | 4 | Servicios y empleados | ⬜ |
 | 5 | Agenda inteligente | ⬜ |
@@ -100,11 +100,44 @@
 - Rutas de navegación (agenda/clientes/servicios/configuración) son
   placeholders — se implementan en sus fases.
 
-## Fase 2 — Gestión de barbería y sucursales (siguiente)
+## Fase 2 — Gestión de barbería y sucursales (COMPLETA 2026-07-08)
 
-Por arrancar: datos generales del tenant (logo, banner, horarios,
-ubicación, redes), tabla `branches` con horarios propios, empleados por
-sede. Migraciones por CLI si hay credenciales, si no documentar pausa.
+### Hecho
+- Migraciones `20260708194032_tenant_profile_and_branches` y
+  `20260708194051_drop_broad_bucket_select` (aplicadas vía MCP, misma
+  excepción de bootstrap; archivos locales con versión remota):
+  - `tenants` ampliado: description, phone, email, website, socials
+    (JSONB), timezone, currency, logo_url, banner_url.
+  - Tabla `branches`: horarios semanales JSONB
+    (`{"mon":[{"open","close"}]}`), RLS (ver miembros / gestionar
+    admin+manager / borrar admin), unique(tenant_id, name).
+  - `memberships.branch_id` (NULL = todo el tenant).
+  - Bucket `tenant-assets` público, escritura solo admin/manager del
+    tenant vía carpeta `{tenant_id}/...`. Sin SELECT amplio (lint 0025).
+- `lib/auth/current-tenant.ts`: `getActiveMembership()` — primera
+  membresía activa (supuesto single-tenant; switcher pendiente).
+- `/dashboard/configuracion`: form datos generales (RHF+Zod, socials,
+  timezone, currency) + upload logo/banner vía server action a Storage
+  (valida tipo/tamaño, limpia asset anterior). Gate `settings:manage`.
+- `/dashboard/sucursales`: CRUD sedes con editor de horario semanal
+  (checkbox por día + open/close), activar/desactivar con Switch, dialogs
+  Base UI. Gate `branches:manage` para escribir; todos los miembros ven.
+- `next.config.ts`: bodySizeLimit 5mb (uploads), remotePatterns Supabase.
+- Tests 41/41. Lint (1 warning aceptable RHF watch + React Compiler).
+  Build OK (9 rutas). Smoke `scripts/smoke-branches.mjs`: barbero ve pero
+  no crea sedes ni edita tenant; owner sí. Todo verde.
+
+### Notas
+- shadcn/ui actual usa Base UI (no Radix): triggers con `render` prop,
+  no `asChild`.
+- Zod schemas de formularios sin `.transform()` (rompe generics de RHF
+  resolver); conversión vacío→null en actions con `lib/forms.ts`.
+
+## Fase 3 — Clientes (siguiente)
+
+Por arrancar: tabla `clients` (perfil, notas, etiquetas, cumpleaños,
+consentimientos, referidos), historial y métricas (frecuencia, gasto
+total) llegan con POS/agenda en fases posteriores.
 
 ## Deuda técnica
 

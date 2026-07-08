@@ -1,4 +1,4 @@
-﻿export type MemberRole =
+export type MemberRole =
   | "admin"
   | "manager"
   | "receptionist"
@@ -6,13 +6,38 @@
   | "accountant"
   | "client";
 
+export type SocialLinks = {
+  instagram?: string;
+  facebook?: string;
+  tiktok?: string;
+  whatsapp?: string;
+};
+
+export type DayKey = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
+
+export type TimeRange = {
+  open: string;
+  close: string;
+};
+
+export type WeeklySchedule = Partial<Record<DayKey, TimeRange[]>>;
+
 export type Tenant = {
   id: string;
   name: string;
   slug: string;
+  description: string | null;
+  phone: string | null;
+  email: string | null;
+  website: string | null;
+  socials: SocialLinks;
+  timezone: string;
+  currency: string;
+  logo_url: string | null;
+  banner_url: string | null;
   created_at: string;
   updated_at: string;
-}
+};
 
 export type Profile = {
   id: string;
@@ -21,7 +46,7 @@ export type Profile = {
   phone: string | null;
   created_at: string;
   updated_at: string;
-}
+};
 
 export type Membership = {
   id: string;
@@ -29,9 +54,23 @@ export type Membership = {
   user_id: string;
   role: MemberRole;
   is_active: boolean;
+  branch_id: string | null;
   created_at: string;
   updated_at: string;
-}
+};
+
+export type Branch = {
+  id: string;
+  tenant_id: string;
+  name: string;
+  address: string | null;
+  city: string | null;
+  phone: string | null;
+  schedule: WeeklySchedule;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+};
 
 export type Database = {
   public: {
@@ -68,6 +107,27 @@ export type Database = {
             referencedRelation: "profiles";
             referencedColumns: ["id"];
           },
+          {
+            foreignKeyName: "memberships_branch_id_fkey";
+            columns: ["branch_id"];
+            isOneToOne: false;
+            referencedRelation: "branches";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      branches: {
+        Row: Branch;
+        Insert: Pick<Branch, "tenant_id" | "name"> & Partial<Branch>;
+        Update: Partial<Branch>;
+        Relationships: [
+          {
+            foreignKeyName: "branches_tenant_id_fkey";
+            columns: ["tenant_id"];
+            isOneToOne: false;
+            referencedRelation: "tenants";
+            referencedColumns: ["id"];
+          },
         ];
       };
     };
@@ -95,5 +155,4 @@ export type Database = {
     };
     CompositeTypes: Record<string, never>;
   };
-}
-
+};
