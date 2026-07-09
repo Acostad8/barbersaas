@@ -314,6 +314,41 @@ export type SalePayment = {
   amount: number;
 };
 
+export type ExpenseCategory = {
+  id: string;
+  tenant_id: string;
+  name: string;
+  created_at: string;
+};
+
+export type Expense = {
+  id: string;
+  tenant_id: string;
+  branch_id: string | null;
+  category_id: string | null;
+  description: string;
+  amount: number;
+  method: PaymentMethod;
+  spent_on: string;
+  notes: string | null;
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type FinanceSummary = {
+  income: number;
+  taxes_collected: number;
+  tips_collected: number;
+  expenses: number;
+  by_day: { day: string; income: number; expense: number }[];
+  expenses_by_category: {
+    category: string;
+    amount: number;
+    entries: number;
+  }[];
+};
+
 export type DiscountType = "percent" | "fixed";
 
 export type Coupon = {
@@ -890,6 +925,43 @@ export type Database = {
           },
         ];
       };
+      expense_categories: {
+        Row: ExpenseCategory;
+        Insert: Pick<ExpenseCategory, "tenant_id" | "name"> &
+          Partial<ExpenseCategory>;
+        Update: Partial<ExpenseCategory>;
+        Relationships: [
+          {
+            foreignKeyName: "expense_categories_tenant_id_fkey";
+            columns: ["tenant_id"];
+            isOneToOne: false;
+            referencedRelation: "tenants";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      expenses: {
+        Row: Expense;
+        Insert: Pick<Expense, "tenant_id" | "description" | "amount"> &
+          Partial<Expense>;
+        Update: Partial<Expense>;
+        Relationships: [
+          {
+            foreignKeyName: "expenses_tenant_id_fkey";
+            columns: ["tenant_id"];
+            isOneToOne: false;
+            referencedRelation: "tenants";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "expenses_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "expense_categories";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       coupons: {
         Row: Coupon;
         Insert: Pick<
@@ -1045,6 +1117,10 @@ export type Database = {
       client_segments: {
         Args: { p_tenant_id: string };
         Returns: ClientSegment[];
+      };
+      finance_summary: {
+        Args: { p_tenant_id: string; p_from: string; p_to: string };
+        Returns: FinanceSummary;
       };
     };
     Enums: {
