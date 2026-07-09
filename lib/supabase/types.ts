@@ -188,6 +188,35 @@ export type ScheduleBlock = {
   updated_at: string;
 };
 
+export type BookingInfo = {
+  tenant: {
+    id: string;
+    name: string;
+    slug: string;
+    description: string | null;
+    logo_url: string | null;
+    banner_url: string | null;
+    timezone: string;
+    currency: string;
+    phone: string | null;
+    socials: SocialLinks;
+  } | null;
+  services: {
+    id: string;
+    name: string;
+    description: string | null;
+    duration_minutes: number;
+    price: number;
+    category: string | null;
+  }[];
+  barbers: {
+    membership_id: string;
+    name: string;
+    specialties: string[];
+    bio: string | null;
+  }[];
+};
+
 export type Database = {
   public: {
     Tables: {
@@ -493,6 +522,31 @@ export type Database = {
       get_user_id_by_email: {
         Args: { p_email: string };
         Returns: string | null;
+      };
+      get_booking_info: {
+        Args: { p_slug: string };
+        Returns: BookingInfo;
+      };
+      available_slots: {
+        Args: {
+          p_tenant_id: string;
+          p_service_id: string;
+          p_membership_id: string;
+          p_date: string;
+        };
+        Returns: { slot_start: string; slot_end: string }[];
+      };
+      book_appointment: {
+        Args: {
+          p_slug: string;
+          p_service_id: string;
+          p_membership_id: string;
+          p_starts_at: string;
+          p_client_name: string;
+          p_client_email: string | null;
+          p_client_phone: string | null;
+        };
+        Returns: string;
       };
     };
     Enums: {

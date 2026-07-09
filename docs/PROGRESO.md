@@ -13,7 +13,7 @@
 | 3 | Clientes | ✅ completa (historial/métricas llegan con agenda/POS) |
 | 4 | Servicios y empleados | ✅ completa (paquetes/promos → F10, metas → F9) |
 | 5 | Agenda inteligente | ✅ base completa (drag&drop y vista semana/mes pendientes) |
-| 6 | Reservas online | ⬜ |
+| 6 | Reservas online | ✅ base completa (pagos, recordatorios y lista de espera pendientes) |
 | 7 | Inventario | ⬜ |
 | 8 | Punto de venta (POS) | ⬜ |
 | 9 | Reportes | ⬜ |
@@ -223,11 +223,46 @@
   previene doble-reserva; la disponibilidad completa llega con el
   portal de reservas (F6) como RPC `available_slots`.
 
-## Fase 6 — Reservas online (siguiente)
+## Fase 6 — Reservas online (BASE COMPLETA 2026-07-08)
 
-Por arrancar: portal público `/[slug]` (selección servicio → barbero →
-fecha/hora → confirmación), RPC `available_slots` (horario barbero −
-citas − bloqueos − ausencias), auto-registro de cliente.
+### Hecho
+- Migración `20260709013933_online_booking` (vía MCP, misma excepción).
+  Tres RPCs security definer expuestos a `anon` (portal público):
+  - `get_booking_info(slug)`: tenant + servicios activos + barberos.
+    Solo datos pensados para ser públicos.
+  - `available_slots(tenant, service, barber, date)`: horario del
+    barbero (`barber_profiles.schedule`; fallback lun-sáb 09:00-19:00
+    si no tiene) − citas vivas − `schedule_blocks` − `time_off`
+    aprobado − slots pasados. Paso de 15 min, duración del servicio,
+    zona horaria del tenant.
+  - `book_appointment(...)`: valida contra `available_slots` (imposible
+    reservar fuera de horario), reutiliza cliente por email/teléfono o
+    lo crea, inserta cita `scheduled` con precio snapshot. Constraint de
+    exclusión sigue siendo la última línea contra carreras (23P01 →
+    `slot_taken`).
+- Portal `/reservar/[slug]`: banner/logo, wizard servicio → barbero →
+  fecha/slots (TanStack Query) → datos de contacto → confirmación.
+  Ruta pública en proxy. `notFound()` si slug no existe.
+- Tests 74/74, lint OK, build OK (12 rutas). Smoke
+  `scripts/smoke-booking.mjs` (TODO como anon): info pública, 39 slots,
+  reserva anónima, slot desaparece, doble reserva rechazada, cliente
+  repetido reutilizado (case-insensitive), reserva fuera de horario
+  rechazada, anon sin acceso directo a tablas.
+- Advisors: WARNs 0028/0029 sobre los 3 RPCs de booking son
+  intencionales (portal anónimo por diseño); resto ya documentado.
+
+### Pendiente de la fase
+- Pago online al reservar → requiere pasarela real (decisión humana:
+  Stripe/Wompi/MercadoPago) — "Pendiente de validar humana".
+- Recordatorios/confirmaciones → F13 (notificaciones).
+- Lista de espera y cancelación/reprogramación por el cliente → deuda.
+- UI del portal no probada en navegador real (flujo backend validado
+  por smoke); probar visualmente al tener `npm run dev` en uso.
+
+## Fase 7 — Inventario (siguiente)
+
+Por arrancar: productos, marcas, categorías, proveedores, stock por
+sede, movimientos (kardex), alertas de stock mínimo.
 
 ## Deuda técnica
 

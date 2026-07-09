@@ -3,7 +3,7 @@ import { createServerClient } from "@supabase/ssr";
 import { publicEnv } from "@/lib/env";
 import type { Database } from "@/lib/supabase/types";
 
-const PUBLIC_PATHS = ["/", "/login", "/register", "/auth"];
+const PUBLIC_PATHS = ["/", "/login", "/register", "/auth", "/reservar"];
 
 function isPublicPath(pathname: string) {
   return PUBLIC_PATHS.some(
