@@ -314,6 +314,25 @@ export type SalePayment = {
   amount: number;
 };
 
+export type NotificationKind =
+  | "appointment_created"
+  | "appointment_cancelled"
+  | "appointment_rescheduled"
+  | "low_stock"
+  | "system";
+
+export type AppNotification = {
+  id: string;
+  tenant_id: string;
+  user_id: string | null;
+  kind: NotificationKind;
+  title: string;
+  body: string | null;
+  link: string | null;
+  read_at: string | null;
+  created_at: string;
+};
+
 export type Plan = {
   id: string;
   name: string;
@@ -955,6 +974,21 @@ export type Database = {
           },
         ];
       };
+      notifications: {
+        Row: AppNotification;
+        Insert: Pick<AppNotification, "tenant_id" | "title"> &
+          Partial<AppNotification>;
+        Update: Partial<AppNotification>;
+        Relationships: [
+          {
+            foreignKeyName: "notifications_tenant_id_fkey";
+            columns: ["tenant_id"];
+            isOneToOne: false;
+            referencedRelation: "tenants";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       plans: {
         Row: Plan;
         Insert: Plan;
@@ -1180,6 +1214,10 @@ export type Database = {
         Args: { p_tenant_id: string; p_from: string; p_to: string };
         Returns: FinanceSummary;
       };
+      mark_notifications_read: {
+        Args: { p_tenant_id: string };
+        Returns: undefined;
+      };
     };
     Enums: {
       member_role: MemberRole;
@@ -1189,6 +1227,7 @@ export type Database = {
       payment_method: PaymentMethod;
       discount_type: DiscountType;
       subscription_status: SubscriptionStatus;
+      notification_kind: NotificationKind;
     };
     CompositeTypes: Record<string, never>;
   };

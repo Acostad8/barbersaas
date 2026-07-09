@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { getActiveMembership } from "@/lib/auth/current-tenant";
 import { signOutAction } from "@/features/auth/actions";
+import { NotificationBell } from "@/features/notifications/components/NotificationBell";
 import { Button } from "@/components/ui/button";
 
 const NAV_ITEMS = [
@@ -33,15 +35,18 @@ export default async function DashboardLayout({
     redirect("/login");
   }
 
-  const { count } = await supabase
-    .from("memberships")
-    .select("id", { count: "exact", head: true })
-    .eq("user_id", user.id)
-    .eq("is_active", true);
+  const active = await getActiveMembership();
 
-  if (!count) {
+  if (!active) {
     redirect("/onboarding");
   }
+
+  const { data: notifications } = await supabase
+    .from("notifications")
+    .select("*")
+    .eq("tenant_id", active.tenant.id)
+    .order("created_at", { ascending: false })
+    .limit(20);
 
   return (
     <div className="flex min-h-screen">
@@ -61,6 +66,7 @@ export default async function DashboardLayout({
           ))}
         </nav>
         <div className="mt-auto space-y-2 border-t pt-4">
+          <NotificationBell notifications={notifications ?? []} />
           <p className="truncate text-xs text-muted-foreground">{user.email}</p>
           <form action={signOutAction}>
             <Button variant="outline" size="sm" type="submit" className="w-full">
