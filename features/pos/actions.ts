@@ -27,9 +27,21 @@ const RPC_ERRORS: Record<string, string> = {
   payments_mismatch: "Los pagos no cuadran con el total",
   invalid_tip: "Propina inválida",
   client_not_found: "Cliente no encontrado",
+  coupon_not_found: "Cupón no encontrado",
+  coupon_inactive: "El cupón está inactivo",
+  coupon_not_started: "El cupón aún no es válido",
+  coupon_expired: "El cupón ya venció",
+  coupon_exhausted: "El cupón agotó sus usos",
+  coupon_min_purchase: "La compra no alcanza el mínimo del cupón",
 };
 
 function friendlyError(message: string): string {
+  if (message.includes("payments_mismatch")) {
+    const match = message.match(/total\s+([\d.]+)\s+vs\s+paid\s+([\d.]+)/);
+    if (match) {
+      return `Los pagos no cuadran: el total a cobrar es ${match[1]} y registraste ${match[2]}.`;
+    }
+  }
   for (const [key, value] of Object.entries(RPC_ERRORS)) {
     if (message.includes(key)) return value;
   }
@@ -93,6 +105,7 @@ export async function createSaleAction(input: {
   tip: number;
   clientId: string | null;
   notes: string;
+  couponCode: string;
 }): Promise<PosActionResult<{ sale_number: number; total: number }>> {
   const active = await getActiveMembership();
   if (!active) return { error: "Sin barbería activa" };
@@ -110,6 +123,8 @@ export async function createSaleAction(input: {
       tip: input.tip,
       client_id: input.clientId,
       notes: input.notes.trim() === "" ? null : input.notes.trim(),
+      coupon_code:
+        input.couponCode.trim() === "" ? null : input.couponCode.trim(),
     },
   });
 

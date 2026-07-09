@@ -217,6 +217,7 @@ export function PosTerminal({
 }) {
   const [cart, setCart] = useState<CartLine[]>([]);
   const [tip, setTip] = useState("0");
+  const [couponCode, setCouponCode] = useState("");
   const [clientId, setClientId] = useState("");
   const [payments, setPayments] = useState<SalePaymentInput[]>([]);
   const [payMethod, setPayMethod] = useState<PaymentMethod>("cash");
@@ -260,6 +261,7 @@ export function PosTerminal({
   const reset = () => {
     setCart([]);
     setTip("0");
+    setCouponCode("");
     setClientId("");
     setPayments([]);
     setPayAmount("");
@@ -282,6 +284,7 @@ export function PosTerminal({
         tip: Number(tip) || 0,
         clientId: clientId === "" ? null : clientId,
         notes: "",
+        couponCode,
       });
       if ("error" in result) {
         setError(result.error);
@@ -459,6 +462,15 @@ export function PosTerminal({
                 onChange={(e) => setTip(e.target.value)}
               />
             </div>
+            <div className="space-y-1 col-span-2">
+              <Label htmlFor="pos-coupon">Cupón (opcional)</Label>
+              <Input
+                id="pos-coupon"
+                placeholder="DESC10"
+                value={couponCode}
+                onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+              />
+            </div>
           </div>
 
           <div className="rounded-md border p-3 text-sm">
@@ -467,6 +479,12 @@ export function PosTerminal({
             <p>Impuestos: {money(totals.tax, currency)}</p>
             <p>Propina: {money(Number(tip) || 0, currency)}</p>
             <p className="font-medium">Total: {money(totals.total, currency)}</p>
+            {couponCode && (
+              <p className="text-xs text-muted-foreground">
+                El descuento del cupón se aplica al cobrar; si los pagos no
+                cuadran, el mensaje te dirá el total final.
+              </p>
+            )}
           </div>
 
           <div className="space-y-2">

@@ -285,6 +285,8 @@ export type Sale = {
   tax_total: number;
   tip: number;
   total: number;
+  coupon_id: string | null;
+  coupon_discount: number;
   notes: string | null;
   created_by: string | null;
   created_at: string;
@@ -310,6 +312,55 @@ export type SalePayment = {
   sale_id: string;
   method: PaymentMethod;
   amount: number;
+};
+
+export type DiscountType = "percent" | "fixed";
+
+export type Coupon = {
+  id: string;
+  tenant_id: string;
+  code: string;
+  description: string | null;
+  discount_type: DiscountType;
+  discount_value: number;
+  min_purchase: number;
+  max_uses: number | null;
+  used_count: number;
+  valid_from: string | null;
+  valid_until: string | null;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export type LoyaltySettings = {
+  tenant_id: string;
+  enabled: boolean;
+  earn_rate: number;
+  updated_at: string;
+};
+
+export type LoyaltyPoint = {
+  id: string;
+  tenant_id: string;
+  client_id: string;
+  sale_id: string | null;
+  points: number;
+  reason: string | null;
+  created_at: string;
+};
+
+export type ClientSegment = {
+  client_id: string;
+  full_name: string;
+  phone: string | null;
+  email: string | null;
+  visits_90d: number;
+  total_visits: number;
+  total_spent: number;
+  points: number;
+  last_visit: string | null;
+  segment: "nuevo" | "frecuente" | "inactivo" | "regular";
 };
 
 export type ReportDashboard = {
@@ -839,6 +890,60 @@ export type Database = {
           },
         ];
       };
+      coupons: {
+        Row: Coupon;
+        Insert: Pick<
+          Coupon,
+          "tenant_id" | "code" | "discount_type" | "discount_value"
+        > &
+          Partial<Coupon>;
+        Update: Partial<Coupon>;
+        Relationships: [
+          {
+            foreignKeyName: "coupons_tenant_id_fkey";
+            columns: ["tenant_id"];
+            isOneToOne: false;
+            referencedRelation: "tenants";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      loyalty_settings: {
+        Row: LoyaltySettings;
+        Insert: Pick<LoyaltySettings, "tenant_id"> & Partial<LoyaltySettings>;
+        Update: Partial<LoyaltySettings>;
+        Relationships: [
+          {
+            foreignKeyName: "loyalty_settings_tenant_id_fkey";
+            columns: ["tenant_id"];
+            isOneToOne: true;
+            referencedRelation: "tenants";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      loyalty_points: {
+        Row: LoyaltyPoint;
+        Insert: Pick<LoyaltyPoint, "tenant_id" | "client_id" | "points"> &
+          Partial<LoyaltyPoint>;
+        Update: Partial<LoyaltyPoint>;
+        Relationships: [
+          {
+            foreignKeyName: "loyalty_points_tenant_id_fkey";
+            columns: ["tenant_id"];
+            isOneToOne: false;
+            referencedRelation: "tenants";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "loyalty_points_client_id_fkey";
+            columns: ["client_id"];
+            isOneToOne: false;
+            referencedRelation: "clients";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: Record<string, never>;
     Functions: {
@@ -923,13 +1028,23 @@ export type Database = {
             client_id?: string | null;
             appointment_id?: string | null;
             notes?: string | null;
+            coupon_code?: string | null;
           };
         };
-        Returns: { sale_id: string; sale_number: number; total: number };
+        Returns: {
+          sale_id: string;
+          sale_number: number;
+          total: number;
+          coupon_discount: number;
+        };
       };
       report_dashboard: {
         Args: { p_tenant_id: string; p_from: string; p_to: string };
         Returns: ReportDashboard;
+      };
+      client_segments: {
+        Args: { p_tenant_id: string };
+        Returns: ClientSegment[];
       };
     };
     Enums: {
@@ -938,6 +1053,7 @@ export type Database = {
       appointment_status: AppointmentStatus;
       stock_movement_type: StockMovementType;
       payment_method: PaymentMethod;
+      discount_type: DiscountType;
     };
     CompositeTypes: Record<string, never>;
   };

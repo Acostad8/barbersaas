@@ -17,7 +17,7 @@
 | 7 | Inventario | ✅ base completa (lotes/vencimientos y órdenes de compra pendientes) |
 | 8 | Punto de venta (POS) | ✅ base completa (facturas formales y cupones pendientes) |
 | 9 | Reportes | ✅ base completa (PDF/Excel pendiente) |
-| 10 | Marketing y fidelización | ⬜ |
+| 10 | Marketing y fidelización | ✅ base completa (campañas → F13, niveles/canje → deuda) |
 | 11 | Finanzas | ⬜ |
 | 12 | Configuración y facturación SaaS | ⬜ |
 | 13 | Notificaciones | ⬜ |
@@ -348,10 +348,36 @@
 - Export PDF/Excel nativo, reportes detallados de inventario y
   rentabilidad, metas de empleados → F14 amplía analítica.
 
-## Fase 10 — Marketing y fidelización (siguiente)
+## Fase 10 — Marketing y fidelización (BASE COMPLETA 2026-07-09)
 
-Por arrancar: cupones/promos, segmentación de clientes
-(inactivos/frecuentes), programa de puntos y referidos.
+### Hecho
+- Migración `20260709051151_marketing_loyalty` (vía MCP):
+  - `coupons`: percent/fixed, compra mínima, usos máximos con contador,
+    vigencia, código normalizado a mayúsculas. Canje DENTRO de
+    `create_sale` v2 con `FOR UPDATE` (serializa used_count bajo
+    concurrencia); errores tipados (not_found/inactive/expired/
+    exhausted/min_purchase).
+  - `loyalty_settings` (earn_rate por unidad; UI lo expresa como
+    puntos por cada 1.000) + `loyalty_points` ledger otorgado
+    automáticamente en la venta (sobre total sin propina).
+  - RPC `client_segments`: visitas 90d, gasto total, puntos, última
+    visita, segmento (nuevo/frecuente/regular/inactivo).
+  - `sales.coupon_id` + `coupon_discount`.
+- `/dashboard/marketing`: config de puntos, CRUD cupones con
+  activar/desactivar y contador de usos, tabla de segmentos con filtro
+  y export CSV. Gate `marketing:manage`.
+- POS: campo de cupón (server calcula el descuento; si los pagos no
+  cuadran, el error dice el total final exacto).
+- Tests 93/93. Build OK (16 rutas). Smoke `scripts/smoke-marketing.mjs`:
+  cupón % (código lowercase normalizado), fijo, agotado/vencido/mínimo
+  rechazados, 18 puntos otorgados, segmentos con cifras exactas.
+- Nota supabase-js: inserts masivos con filas de forma distinta mandan
+  null (no default) en columnas faltantes — dar forma completa a todas.
+
+### Diferido
+- Campañas SMS/WhatsApp/email → F13 (requiere proveedor —
+  credenciales humanas). Niveles de fidelidad y canje de puntos como
+  pago → deuda. Referidos UI → deuda (columna existe desde F3).
 
 ## Deuda técnica
 
