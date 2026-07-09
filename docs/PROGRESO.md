@@ -429,6 +429,18 @@
 - `app/page.tsx` reescrita: hero con CTA, 6 features, planes leídos de
   la tabla `plans` (catálogo público), FAQ, footer. Metadata SEO +
   OpenGraph. Responsive.
+- **Rediseño premium (2026-07-09)**: estética "ethereal glass" (fondo
+  OLED `#050505`, orbes de gradiente animados, grano de película,
+  acento ámbar), nav pill flotante con hamburguesa que muta a X y
+  overlay con links escalonados, hero con mock de agenda, marquee de
+  módulos, bento grid asimétrico con cards double-bezel, planes con
+  CTA button-in-button, FAQ acordeón animado. Scroll-reveal vía
+  IntersectionObserver (`components/landing/Reveal.tsx`), easing
+  `cubic-bezier(0.32,0.72,0,1)`, solo transform/opacity,
+  `prefers-reduced-motion` respetado. Guiado por skills de diseño
+  instaladas (`high-end-visual-design`, impeccable hooks).
+- ESLint ahora ignora `.agents/**` y `.claude/**` (scripts de skills).
+- Pendiente: verificación visual en navegador real.
 
 ## ✅ TODAS LAS FASES BASE COMPLETAS (2026-07-09)
 
