@@ -14,7 +14,7 @@
 | 4 | Servicios y empleados | ✅ completa (paquetes/promos → F10, metas → F9) |
 | 5 | Agenda inteligente | ✅ base completa (drag&drop y vista semana/mes pendientes) |
 | 6 | Reservas online | ✅ base completa (pagos, recordatorios y lista de espera pendientes) |
-| 7 | Inventario | ⬜ |
+| 7 | Inventario | ✅ base completa (lotes/vencimientos y órdenes de compra pendientes) |
 | 8 | Punto de venta (POS) | ⬜ |
 | 9 | Reportes | ⬜ |
 | 10 | Marketing y fidelización | ⬜ |
@@ -259,10 +259,41 @@
 - UI del portal no probada en navegador real (flujo backend validado
   por smoke); probar visualmente al tener `npm run dev` en uso.
 
-## Fase 7 — Inventario (siguiente)
+## Fase 7 — Inventario (BASE COMPLETA 2026-07-08)
 
-Por arrancar: productos, marcas, categorías, proveedores, stock por
-sede, movimientos (kardex), alertas de stock mínimo.
+### Hecho
+- Migraciones `20260709022002_inventory` y
+  `20260709022208_fix_apply_stock_movement` (vía MCP, misma excepción):
+  - `suppliers`, `product_categories`, `products` (SKU único por tenant
+    case-insensitive, costo/precio/min_stock con checks).
+  - `stock_movements` = kardex INMUTABLE (sin policies de
+    update/delete; correcciones = contramovimiento). 7 tipos:
+    purchase/transfer_in/adjustment_in (entrada), sale/transfer_out/
+    adjustment_out/loss (salida). `branch_id` NULL = ubicación principal.
+  - `stock_levels` cache mantenido por trigger SECURITY DEFINER
+    (`apply_stock_movement`); usuarios sin escritura directa. Check
+    `quantity >= 0` → sobreventa imposible (`insufficient_stock`).
+  - **Bug encontrado y corregido**: los CHECK se evalúan ANTES que el
+    arbitraje de ON CONFLICT, así que insertar delta negativo explotaba
+    antes de llegar al DO UPDATE. Fix: UPDATE primero, INSERT solo si
+    no existe fila (con manejo de carrera por unique_violation).
+  - RLS: todo inventario solo admin/manager (POS ampliará a
+    receptionist para ventas en F8).
+- `/dashboard/inventario`: alertas de stock bajo (≤ min_stock), CRUD
+  productos, registrar movimiento (tipo/sede/cantidad/costo), kardex
+  reciente (30), proveedores y categorías inline.
+- Tests 82/82. Build OK (13 rutas). Smoke `scripts/smoke-inventory.mjs`:
+  compra→stock 10, venta→6, sobreventa bloqueada con stock intacto,
+  kardex inmutable, stock_levels no escribible, barbero sin acceso.
+
+### Diferido
+- Lotes y vencimientos, órdenes de compra formales → deuda técnica.
+- Venta de productos desde POS descuenta stock → F8.
+
+## Fase 8 — Punto de venta (POS) (siguiente)
+
+Por arrancar: ventas (servicios + productos), múltiples métodos de
+pago, propinas, descuentos, apertura/cierre de caja con arqueo.
 
 ## Deuda técnica
 

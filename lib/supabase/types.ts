@@ -188,6 +188,74 @@ export type ScheduleBlock = {
   updated_at: string;
 };
 
+export type Supplier = {
+  id: string;
+  tenant_id: string;
+  name: string;
+  phone: string | null;
+  email: string | null;
+  notes: string | null;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ProductCategory = {
+  id: string;
+  tenant_id: string;
+  name: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type Product = {
+  id: string;
+  tenant_id: string;
+  category_id: string | null;
+  supplier_id: string | null;
+  sku: string | null;
+  name: string;
+  description: string | null;
+  brand: string | null;
+  unit: string;
+  cost: number;
+  price: number;
+  min_stock: number;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export type StockMovementType =
+  | "purchase"
+  | "transfer_in"
+  | "adjustment_in"
+  | "sale"
+  | "transfer_out"
+  | "adjustment_out"
+  | "loss";
+
+export type StockMovement = {
+  id: string;
+  tenant_id: string;
+  product_id: string;
+  branch_id: string | null;
+  movement_type: StockMovementType;
+  quantity: number;
+  unit_cost: number | null;
+  note: string | null;
+  created_by: string | null;
+  created_at: string;
+};
+
+export type StockLevel = {
+  tenant_id: string;
+  product_id: string;
+  branch_id: string | null;
+  quantity: number;
+  updated_at: string;
+};
+
 export type BookingInfo = {
   tenant: {
     id: string;
@@ -496,6 +564,116 @@ export type Database = {
           },
         ];
       };
+      suppliers: {
+        Row: Supplier;
+        Insert: Pick<Supplier, "tenant_id" | "name"> & Partial<Supplier>;
+        Update: Partial<Supplier>;
+        Relationships: [
+          {
+            foreignKeyName: "suppliers_tenant_id_fkey";
+            columns: ["tenant_id"];
+            isOneToOne: false;
+            referencedRelation: "tenants";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      product_categories: {
+        Row: ProductCategory;
+        Insert: Pick<ProductCategory, "tenant_id" | "name"> &
+          Partial<ProductCategory>;
+        Update: Partial<ProductCategory>;
+        Relationships: [
+          {
+            foreignKeyName: "product_categories_tenant_id_fkey";
+            columns: ["tenant_id"];
+            isOneToOne: false;
+            referencedRelation: "tenants";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      products: {
+        Row: Product;
+        Insert: Pick<Product, "tenant_id" | "name"> & Partial<Product>;
+        Update: Partial<Product>;
+        Relationships: [
+          {
+            foreignKeyName: "products_tenant_id_fkey";
+            columns: ["tenant_id"];
+            isOneToOne: false;
+            referencedRelation: "tenants";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "products_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "product_categories";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "products_supplier_id_fkey";
+            columns: ["supplier_id"];
+            isOneToOne: false;
+            referencedRelation: "suppliers";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      stock_movements: {
+        Row: StockMovement;
+        Insert: Pick<
+          StockMovement,
+          "tenant_id" | "product_id" | "movement_type" | "quantity"
+        > &
+          Partial<StockMovement>;
+        Update: Partial<StockMovement>;
+        Relationships: [
+          {
+            foreignKeyName: "stock_movements_tenant_id_fkey";
+            columns: ["tenant_id"];
+            isOneToOne: false;
+            referencedRelation: "tenants";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "stock_movements_product_id_fkey";
+            columns: ["product_id"];
+            isOneToOne: false;
+            referencedRelation: "products";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "stock_movements_branch_id_fkey";
+            columns: ["branch_id"];
+            isOneToOne: false;
+            referencedRelation: "branches";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      stock_levels: {
+        Row: StockLevel;
+        Insert: StockLevel;
+        Update: Partial<StockLevel>;
+        Relationships: [
+          {
+            foreignKeyName: "stock_levels_tenant_id_fkey";
+            columns: ["tenant_id"];
+            isOneToOne: false;
+            referencedRelation: "tenants";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "stock_levels_product_id_fkey";
+            columns: ["product_id"];
+            isOneToOne: false;
+            referencedRelation: "products";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: Record<string, never>;
     Functions: {
@@ -553,6 +731,7 @@ export type Database = {
       member_role: MemberRole;
       time_off_status: TimeOffStatus;
       appointment_status: AppointmentStatus;
+      stock_movement_type: StockMovementType;
     };
     CompositeTypes: Record<string, never>;
   };
