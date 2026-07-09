@@ -256,6 +256,62 @@ export type StockLevel = {
   updated_at: string;
 };
 
+export type PaymentMethod = "cash" | "card" | "transfer" | "other";
+
+export type CashSession = {
+  id: string;
+  tenant_id: string;
+  branch_id: string | null;
+  opened_by: string;
+  opening_amount: number;
+  opened_at: string;
+  closed_by: string | null;
+  closing_amount: number | null;
+  expected_amount: number | null;
+  closing_notes: string | null;
+  closed_at: string | null;
+};
+
+export type Sale = {
+  id: string;
+  tenant_id: string;
+  branch_id: string | null;
+  session_id: string;
+  client_id: string | null;
+  appointment_id: string | null;
+  sale_number: number;
+  subtotal: number;
+  discount_total: number;
+  tax_total: number;
+  tip: number;
+  total: number;
+  notes: string | null;
+  created_by: string | null;
+  created_at: string;
+};
+
+export type SaleItem = {
+  id: string;
+  tenant_id: string;
+  sale_id: string;
+  service_id: string | null;
+  product_id: string | null;
+  description: string;
+  quantity: number;
+  unit_price: number;
+  discount: number;
+  tax_rate: number;
+  line_total: number;
+};
+
+export type SalePayment = {
+  id: string;
+  tenant_id: string;
+  sale_id: string;
+  method: PaymentMethod;
+  amount: number;
+};
+
 export type BookingInfo = {
   tenant: {
     id: string;
@@ -674,6 +730,87 @@ export type Database = {
           },
         ];
       };
+      cash_sessions: {
+        Row: CashSession;
+        Insert: Pick<
+          CashSession,
+          "tenant_id" | "opened_by" | "opening_amount"
+        > &
+          Partial<CashSession>;
+        Update: Partial<CashSession>;
+        Relationships: [
+          {
+            foreignKeyName: "cash_sessions_tenant_id_fkey";
+            columns: ["tenant_id"];
+            isOneToOne: false;
+            referencedRelation: "tenants";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "cash_sessions_branch_id_fkey";
+            columns: ["branch_id"];
+            isOneToOne: false;
+            referencedRelation: "branches";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      sales: {
+        Row: Sale;
+        Insert: Sale;
+        Update: Partial<Sale>;
+        Relationships: [
+          {
+            foreignKeyName: "sales_tenant_id_fkey";
+            columns: ["tenant_id"];
+            isOneToOne: false;
+            referencedRelation: "tenants";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "sales_session_id_fkey";
+            columns: ["session_id"];
+            isOneToOne: false;
+            referencedRelation: "cash_sessions";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "sales_client_id_fkey";
+            columns: ["client_id"];
+            isOneToOne: false;
+            referencedRelation: "clients";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      sale_items: {
+        Row: SaleItem;
+        Insert: SaleItem;
+        Update: Partial<SaleItem>;
+        Relationships: [
+          {
+            foreignKeyName: "sale_items_sale_id_fkey";
+            columns: ["sale_id"];
+            isOneToOne: false;
+            referencedRelation: "sales";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      sale_payments: {
+        Row: SalePayment;
+        Insert: SalePayment;
+        Update: Partial<SalePayment>;
+        Relationships: [
+          {
+            foreignKeyName: "sale_payments_sale_id_fkey";
+            columns: ["sale_id"];
+            isOneToOne: false;
+            referencedRelation: "sales";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: Record<string, never>;
     Functions: {
@@ -726,12 +863,49 @@ export type Database = {
         };
         Returns: string;
       };
+      open_cash_session: {
+        Args: {
+          p_tenant_id: string;
+          p_branch_id: string | null;
+          p_opening_amount: number;
+        };
+        Returns: string;
+      };
+      close_cash_session: {
+        Args: {
+          p_session_id: string;
+          p_closing_amount: number;
+          p_notes?: string | null;
+        };
+        Returns: CashSession;
+      };
+      create_sale: {
+        Args: {
+          p_tenant_id: string;
+          p_session_id: string;
+          p_payload: {
+            items: {
+              type: "service" | "product";
+              id: string;
+              quantity: number;
+              discount: number;
+            }[];
+            payments: { method: PaymentMethod; amount: number }[];
+            tip?: number;
+            client_id?: string | null;
+            appointment_id?: string | null;
+            notes?: string | null;
+          };
+        };
+        Returns: { sale_id: string; sale_number: number; total: number };
+      };
     };
     Enums: {
       member_role: MemberRole;
       time_off_status: TimeOffStatus;
       appointment_status: AppointmentStatus;
       stock_movement_type: StockMovementType;
+      payment_method: PaymentMethod;
     };
     CompositeTypes: Record<string, never>;
   };

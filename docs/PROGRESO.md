@@ -15,7 +15,7 @@
 | 5 | Agenda inteligente | ✅ base completa (drag&drop y vista semana/mes pendientes) |
 | 6 | Reservas online | ✅ base completa (pagos, recordatorios y lista de espera pendientes) |
 | 7 | Inventario | ✅ base completa (lotes/vencimientos y órdenes de compra pendientes) |
-| 8 | Punto de venta (POS) | ⬜ |
+| 8 | Punto de venta (POS) | ✅ base completa (facturas formales y cupones pendientes) |
 | 9 | Reportes | ⬜ |
 | 10 | Marketing y fidelización | ⬜ |
 | 11 | Finanzas | ⬜ |
@@ -290,10 +290,43 @@
 - Lotes y vencimientos, órdenes de compra formales → deuda técnica.
 - Venta de productos desde POS descuenta stock → F8.
 
-## Fase 8 — Punto de venta (POS) (siguiente)
+## Fase 8 — Punto de venta (BASE COMPLETA 2026-07-08)
 
-Por arrancar: ventas (servicios + productos), múltiples métodos de
-pago, propinas, descuentos, apertura/cierre de caja con arqueo.
+### Hecho
+- Migración `20260709024614_pos` (vía MCP, misma excepción):
+  - `cash_sessions`: una caja abierta por tenant+sede (índice único
+    parcial), apertura con base, cierre con arqueo (`expected_amount` =
+    base + ventas en efectivo de la sesión).
+  - `sales` con numeración secuencial por tenant (`tenant_counters`
+    con row-lock), `sale_items` (snapshot de descripción/precio,
+    servicio O producto vía `num_nonnulls`), `sale_payments`
+    (multipago: cash/card/transfer/other).
+  - **Sin policies de escritura directa**: toda venta pasa por RPC
+    `create_sale` SECURITY DEFINER que calcula totales SERVER-SIDE
+    desde el catálogo (el cliente solo manda ids/cantidades/descuentos),
+    valida sesión abierta, descuenta stock de productos vía kardex
+    (stock insuficiente aborta TODO), exige pagos == total, y completa
+    la cita si se vincula. RPCs `open/close_cash_session` con chequeo
+    de rol interno.
+  - Lectura: admin/manager/receptionist/accountant.
+- `/dashboard/pos`: abrir caja (sede + base), terminal de venta
+  (catálogo clicable, carrito con cantidad/descuento por línea,
+  cliente opcional, propina, multipago con "falta X", cobrar
+  deshabilitado hasta cuadrar), cierre con arqueo, ventas recientes.
+- Tests 82/82. Build OK (14 rutas). Smoke `scripts/smoke-pos.mjs`:
+  venta sin sesión rechazada, doble caja bloqueada, pagos≠total
+  rechazado SIN efectos secundarios (atomicidad verificada), totales
+  con IVA/descuento/propina exactos (57750), stock descontado,
+  numeración secuencial, arqueo esperado exacto, barbero bloqueado.
+
+### Diferido
+- Facturación formal/electrónica, cupones → F10/F12.
+- Devoluciones (contramovimiento + nota crédito) → deuda.
+
+## Fase 9 — Reportes (siguiente)
+
+Por arrancar: ventas por período/empleado/servicio, comisiones,
+ingresos, exportación CSV.
 
 ## Deuda técnica
 
