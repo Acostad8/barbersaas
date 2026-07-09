@@ -1,40 +1,45 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { getActiveMembership } from "@/lib/auth/current-tenant";
+import { hasPermission } from "@/lib/auth/permissions";
+import { AnalyticsHome } from "@/features/analytics/components/AnalyticsHome";
 
 export default async function DashboardPage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const active = await getActiveMembership();
 
-  if (!user) {
-    redirect("/login");
+  if (!active) {
+    redirect("/onboarding");
   }
 
-  const { data: memberships } = await supabase
-    .from("memberships")
-    .select("id, role, tenant_id, tenants(name, slug)")
-    .eq("user_id", user.id)
-    .eq("is_active", true);
+  const canSeeAnalytics = hasPermission(active.role, "reports:view");
+
+  let overview = null;
+  if (canSeeAnalytics) {
+    const supabase = await createClient();
+    const { data } = await supabase.rpc("analytics_overview", {
+      p_tenant_id: active.tenant.id,
+      p_days: 30,
+    });
+    overview = data;
+  }
 
   return (
-    <main className="mx-auto max-w-4xl space-y-8 p-8">
+    <main className="mx-auto max-w-5xl space-y-8 p-8">
       <header>
-        <h1 className="text-2xl font-semibold">Panel</h1>
-        <p className="text-sm text-muted-foreground">{user.email}</p>
+        <h1 className="text-2xl font-semibold">{active.tenant.name}</h1>
+        <p className="text-sm text-muted-foreground">
+          {canSeeAnalytics
+            ? "Resumen ejecutivo de los últimos 30 días"
+            : "Bienvenido. Usa el menú para ver tu agenda."}
+        </p>
       </header>
-
-      <section>
-        <h2 className="mb-4 text-lg font-medium">Tus barberías</h2>
-        <ul className="space-y-2">
-          {memberships?.map((m) => (
-            <li key={m.id} className="rounded-md border p-4">
-              <span className="font-medium">{m.tenants?.name}</span>{" "}
-              <span className="text-sm text-muted-foreground">({m.role})</span>
-            </li>
-          ))}
-        </ul>
-      </section>
+      {canSeeAnalytics && overview ? (
+        <AnalyticsHome overview={overview} currency={active.tenant.currency} />
+      ) : (
+        <p className="text-sm text-muted-foreground">
+          Consulta tus citas del día en la sección Agenda.
+        </p>
+      )}
     </main>
   );
 }

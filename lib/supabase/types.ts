@@ -314,6 +314,20 @@ export type SalePayment = {
   amount: number;
 };
 
+export type AnalyticsOverview = {
+  days: number;
+  current: { revenue: number; sales_count: number };
+  previous: { revenue: number; sales_count: number };
+  appointments_current: {
+    total: number;
+    completed: number;
+    no_show: number;
+  };
+  new_clients_current: number;
+  new_clients_previous: number;
+  heatmap: { dow: number; hour: number; appointments: number }[];
+};
+
 export type NotificationKind =
   | "appointment_created"
   | "appointment_cancelled"
@@ -1217,6 +1231,10 @@ export type Database = {
       mark_notifications_read: {
         Args: { p_tenant_id: string };
         Returns: undefined;
+      };
+      analytics_overview: {
+        Args: { p_tenant_id: string; p_days?: number };
+        Returns: AnalyticsOverview;
       };
     };
     Enums: {
