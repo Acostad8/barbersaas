@@ -1,4 +1,4 @@
-# PROGRESO — BarberSaaS
+﻿# PROGRESO — BarberSaaS
 
 > Memoria entre sesiones. Actualizar después de cada módulo completado.
 > Última actualización: 2026-07-08
@@ -18,11 +18,11 @@
 | 8 | Punto de venta (POS) | ✅ base completa (facturas formales y cupones pendientes) |
 | 9 | Reportes | ✅ base completa (PDF/Excel pendiente) |
 | 10 | Marketing y fidelización | ✅ base completa (campañas → F13, niveles/canje → deuda) |
-| 11 | Finanzas | ⬜ |
-| 12 | Configuración y facturación SaaS | ⬜ |
-| 13 | Notificaciones | ⬜ |
-| 14 | Analítica ejecutiva e IA | ⬜ |
-| 15 | Landing page pública | ⬜ |
+| 11 | Finanzas | ✅ base completa |
+| 12 | Configuración y facturación SaaS | ✅ base completa (pasarela pendiente humano) |
+| 13 | Notificaciones | ✅ in-app completa (canales externos pendiente humano) |
+| 14 | Analítica ejecutiva e IA | ✅ KPIs y heatmap (IA pendiente API key) |
+| 15 | Landing page pública | ✅ completa |
 
 ## Fase 0 — Bootstrap
 
@@ -378,6 +378,64 @@
 - Campañas SMS/WhatsApp/email → F13 (requiere proveedor —
   credenciales humanas). Niveles de fidelidad y canje de puntos como
   pago → deuda. Referidos UI → deuda (columna existe desde F3).
+
+## Fase 11 — Finanzas (BASE COMPLETA 2026-07-09)
+
+- Migración `20260709064337_finance`: `expense_categories`, `expenses`
+  (monto/método/sede/fecha), RPC `finance_summary` (ingresos, impuestos,
+  propinas, egresos, flujo diario fusionado, egresos por categoría) —
+  todo en DB, tz del tenant. RLS admin/manager/accountant.
+- `/dashboard/finanzas`: cards (balance con color), flujo diario con
+  CSV, CRUD egresos, categorías inline. Smoke
+  `scripts/smoke-finance.mjs` verde (cifras exactas, barbero bloqueado).
+
+## Fase 12 — SaaS: planes y suscripciones (BASE COMPLETA 2026-07-09)
+
+- Migración `20260709064844_saas_plans`: `plans` (free/pro/premium con
+  límites de sedes/staff, lectura pública para la landing),
+  `tenant_subscriptions` con trigger de auto-alta al crear tenant y
+  backfill de existentes. Cambio de plan solo admin, con guard de
+  downgrade (cuenta sedes/staff activos antes de permitir).
+- UI de planes en Configuración con plan actual resaltado.
+- **Pendiente humano**: pasarela de pago (Stripe/Wompi/MercadoPago).
+  `changePlanAction` es el seam donde se conecta el checkout.
+
+## Fase 13 — Notificaciones (BASE COMPLETA 2026-07-09)
+
+- Migración `20260709071328_notifications`: tabla con alcance personal
+  y tenant-wide (solo front desk ve las generales), inserts únicamente
+  desde triggers security definer. Trigger de citas: creación (barbero
+  + general), cancelación y reagendamiento (barbero). RPC
+  `mark_notifications_read`.
+- Campana en sidebar con badge de no leídas. Smoke
+  `scripts/smoke-notifications.mjs` verde (scoping, cancelación,
+  marcar leídas).
+- **Pendiente humano**: canales externos email/SMS/WhatsApp — requieren
+  credenciales de proveedor (Resend/Twilio). La tabla es la cola que
+  consumirá una Edge Function cuando existan.
+
+## Fase 14 — Analítica ejecutiva (BASE COMPLETA 2026-07-09)
+
+- Migración `20260709071838_analytics`: RPC `analytics_overview` — KPIs
+  30d con comparativa del período anterior (ingresos, ventas, clientes
+  nuevos), resultados de citas y heatmap día×hora (90d, tz tenant).
+- Home del dashboard: cards KPI con deltas de tendencia + heatmap de
+  horas pico (roles con `reports:view`; el resto ve bienvenida simple).
+- **Pendiente humano**: asistente conversacional IA y pronósticos —
+  requieren API key de Anthropic.
+
+## Fase 15 — Landing pública (COMPLETA 2026-07-09)
+
+- `app/page.tsx` reescrita: hero con CTA, 6 features, planes leídos de
+  la tabla `plans` (catálogo público), FAQ, footer. Metadata SEO +
+  OpenGraph. Responsive.
+
+## ✅ TODAS LAS FASES BASE COMPLETAS (2026-07-09)
+
+15/15 fases con base funcional end-to-end. Pendientes que requieren
+decisión/credencial humana: pasarela de pago, proveedor de
+email/SMS/WhatsApp, API key de IA, credenciales Google OAuth,
+`SUPABASE_ACCESS_TOKEN`/`DB_PASSWORD` para operar migraciones por CLI.
 
 ## Deuda técnica
 
