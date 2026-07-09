@@ -20,6 +20,7 @@ import {
 
 export function RegisterForm() {
   const [serverError, setServerError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
   const {
@@ -32,13 +33,32 @@ export function RegisterForm() {
 
   const onSubmit = (data: RegisterInput) => {
     setServerError(null);
+    setSuccessMessage(null);
     startTransition(async () => {
       const result = await signUpAction(data);
-      if (result?.error) {
+      if (result && "error" in result) {
         setServerError(result.error);
+      } else if (result && "message" in result) {
+        setSuccessMessage(result.message);
       }
     });
   };
+
+  if (successMessage) {
+    return (
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <CardTitle>Revisa tu correo</CardTitle>
+          <CardDescription>{successMessage}</CardDescription>
+        </CardHeader>
+        <CardFooter>
+          <Link href="/login" className="text-primary underline">
+            Ir a iniciar sesión
+          </Link>
+        </CardFooter>
+      </Card>
+    );
+  }
 
   return (
     <Card className="w-full max-w-md">

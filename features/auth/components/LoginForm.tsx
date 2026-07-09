@@ -34,7 +34,7 @@ export function LoginForm() {
     setServerError(null);
     startTransition(async () => {
       const result = await signInAction(data);
-      if (result?.error) {
+      if (result && "error" in result) {
         setServerError(result.error);
       }
     });
