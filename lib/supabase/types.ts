@@ -312,6 +312,34 @@ export type SalePayment = {
   amount: number;
 };
 
+export type ReportDashboard = {
+  summary: {
+    sales_count: number;
+    gross_total: number;
+    subtotal: number;
+    discounts: number;
+    taxes: number;
+    tips: number;
+    avg_ticket: number;
+  };
+  by_day: { day: string; sales_count: number; total: number }[];
+  by_method: { method: PaymentMethod; amount: number; sales_count: number }[];
+  top_services: { name: string; quantity: number; revenue: number }[];
+  top_products: { name: string; quantity: number; revenue: number }[];
+  commissions: {
+    barber: string;
+    completed_appointments: number;
+    revenue: number;
+    commission: number;
+  }[];
+  appointments: {
+    total: number;
+    completed: number;
+    cancelled: number;
+    no_show: number;
+  };
+};
+
 export type BookingInfo = {
   tenant: {
     id: string;
@@ -898,6 +926,10 @@ export type Database = {
           };
         };
         Returns: { sale_id: string; sale_number: number; total: number };
+      };
+      report_dashboard: {
+        Args: { p_tenant_id: string; p_from: string; p_to: string };
+        Returns: ReportDashboard;
       };
     };
     Enums: {

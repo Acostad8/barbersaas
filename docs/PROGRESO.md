@@ -16,7 +16,7 @@
 | 6 | Reservas online | ✅ base completa (pagos, recordatorios y lista de espera pendientes) |
 | 7 | Inventario | ✅ base completa (lotes/vencimientos y órdenes de compra pendientes) |
 | 8 | Punto de venta (POS) | ✅ base completa (facturas formales y cupones pendientes) |
-| 9 | Reportes | ⬜ |
+| 9 | Reportes | ✅ base completa (PDF/Excel pendiente) |
 | 10 | Marketing y fidelización | ⬜ |
 | 11 | Finanzas | ⬜ |
 | 12 | Configuración y facturación SaaS | ⬜ |
@@ -323,11 +323,42 @@
 - Facturación formal/electrónica, cupones → F10/F12.
 - Devoluciones (contramovimiento + nota crédito) → deuda.
 
-## Fase 9 — Reportes (siguiente)
+## Fase 9 — Reportes (BASE COMPLETA 2026-07-08)
 
-Por arrancar: ventas por período/empleado/servicio, comisiones,
-ingresos, exportación CSV.
+### Hecho
+- Migración `20260709041333_reports` (vía MCP): RPC `report_dashboard`
+  SECURITY DEFINER (roles admin/manager/accountant), agregados 100% en
+  DB con rango interpretado en la zona horaria del tenant:
+  - summary (ventas, ingresos, descuentos, impuestos, propinas, ticket
+    promedio), serie por día, por método de pago, top 10 servicios y
+    productos, comisiones por barbero (override de
+    `barber_profiles.commission_rate` → si no, tasa del servicio),
+    bloque de citas (completadas/canceladas/no-show).
+- `/dashboard/reportes`: rango de fechas (default mes actual), cards de
+  resumen, tablas con export CSV client-side (`lib/csv.ts` con BOM
+  UTF-8 y separador `;` para Excel es-CO). Gate `reports:view`.
+- Tests 85/85 (incluye csv). Build OK (15 rutas). Smoke
+  `scripts/smoke-reports.mjs`: agregados verificados contra ventas
+  conocidas (2 ventas=65000, métodos exactos, 3 cortes, comisión
+  50%=10000, citas), barbero rechazado con `forbidden`.
+- Nota fechas: el rango del RPC se interpreta en la tz del tenant;
+  clientes deben mandar fechas locales, no UTC.
+
+### Diferido
+- Export PDF/Excel nativo, reportes detallados de inventario y
+  rentabilidad, metas de empleados → F14 amplía analítica.
+
+## Fase 10 — Marketing y fidelización (siguiente)
+
+Por arrancar: cupones/promos, segmentación de clientes
+(inactivos/frecuentes), programa de puntos y referidos.
 
 ## Deuda técnica
 
-- Ninguna registrada aún.
+- Invitación de usuarios no registrados (email invite) — hoy solo se
+  agregan usuarios ya registrados (F4).
+- Drag & drop y vista semana/mes en agenda; UI de `schedule_blocks` (F5).
+- Cancelación/reprogramación por el cliente y lista de espera (F6).
+- Lotes/vencimientos y órdenes de compra formales (F7).
+- Devoluciones POS con nota crédito (F8).
+- Export PDF/Excel de reportes (F9).
