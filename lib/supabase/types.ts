@@ -314,6 +314,36 @@ export type SalePayment = {
   amount: number;
 };
 
+export type Plan = {
+  id: string;
+  name: string;
+  description: string | null;
+  price_monthly: number;
+  currency: string;
+  max_branches: number;
+  max_staff: number;
+  features: string[];
+  is_active: boolean;
+  sort_order: number;
+};
+
+export type SubscriptionStatus =
+  | "trialing"
+  | "active"
+  | "past_due"
+  | "cancelled";
+
+export type TenantSubscription = {
+  tenant_id: string;
+  plan_id: string;
+  status: SubscriptionStatus;
+  trial_ends_at: string | null;
+  period_ends_at: string | null;
+  cancelled_at: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
 export type ExpenseCategory = {
   id: string;
   tenant_id: string;
@@ -925,6 +955,34 @@ export type Database = {
           },
         ];
       };
+      plans: {
+        Row: Plan;
+        Insert: Plan;
+        Update: Partial<Plan>;
+        Relationships: [];
+      };
+      tenant_subscriptions: {
+        Row: TenantSubscription;
+        Insert: Pick<TenantSubscription, "tenant_id" | "plan_id"> &
+          Partial<TenantSubscription>;
+        Update: Partial<TenantSubscription>;
+        Relationships: [
+          {
+            foreignKeyName: "tenant_subscriptions_tenant_id_fkey";
+            columns: ["tenant_id"];
+            isOneToOne: true;
+            referencedRelation: "tenants";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tenant_subscriptions_plan_id_fkey";
+            columns: ["plan_id"];
+            isOneToOne: false;
+            referencedRelation: "plans";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       expense_categories: {
         Row: ExpenseCategory;
         Insert: Pick<ExpenseCategory, "tenant_id" | "name"> &
@@ -1130,6 +1188,7 @@ export type Database = {
       stock_movement_type: StockMovementType;
       payment_method: PaymentMethod;
       discount_type: DiscountType;
+      subscription_status: SubscriptionStatus;
     };
     CompositeTypes: Record<string, never>;
   };
