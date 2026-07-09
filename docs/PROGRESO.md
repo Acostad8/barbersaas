@@ -12,7 +12,7 @@
 | 2 | Gestión de barbería y sucursales | ✅ completa |
 | 3 | Clientes | ✅ completa (historial/métricas llegan con agenda/POS) |
 | 4 | Servicios y empleados | ✅ completa (paquetes/promos → F10, metas → F9) |
-| 5 | Agenda inteligente | ⬜ |
+| 5 | Agenda inteligente | ✅ base completa (drag&drop y vista semana/mes pendientes) |
 | 6 | Reservas online | ⬜ |
 | 7 | Inventario | ⬜ |
 | 8 | Punto de venta (POS) | ⬜ |
@@ -191,11 +191,43 @@
 - Invitación de usuarios no registrados (email invite) → deuda técnica;
   hoy solo se agregan usuarios ya registrados.
 
-## Fase 5 — Agenda inteligente (siguiente)
+## Fase 5 — Agenda inteligente (BASE COMPLETA 2026-07-08)
 
-Por arrancar: tabla `appointments` (cliente, barbero, servicio, sede,
-inicio/fin, estado), validación de solapamientos en DB, calendario
-día/semana con timeline, bloqueos de horario.
+### Hecho
+- Migración `20260709011411_appointments` (vía MCP, misma excepción):
+  - `appointments`: cliente/barbero/servicio/sede, precio snapshot al
+    agendar, estados (scheduled→confirmed→in_progress→completed /
+    cancelled / no_show).
+  - **Anti doble-reserva en DB**: `EXCLUDE USING gist (membership_id
+    WITH =, tstzrange WITH &&)` ignorando cancelled/no_show
+    (btree_gist). Código 23P01 → mensaje amigable en la action.
+  - `schedule_blocks` para bloqueos ad-hoc (por barbero o sede completa).
+  - RLS: recepción/gerencia ve y gestiona todo; barbero SOLO ve y
+    actualiza sus propias citas; no crea.
+- Máquina de estados en `features/agenda/schemas.ts`
+  (`STATUS_TRANSITIONS`), validada en action antes de actualizar.
+- `/dashboard/agenda`: vista día con columnas por barbero, navegación
+  ←/fecha/→, nueva cita (duración+precio salen del servicio en el
+  server, nunca del cliente), transiciones de estado, reagendar
+  (conserva duración), cancelación con motivo. Barbero ve solo su
+  columna.
+- Tests 74/74. Build OK (11 rutas). Smoke `scripts/smoke-agenda.mjs`:
+  solapamiento rechazado (23P01), mismo horario con otro barbero OK,
+  slot reutilizable tras cancelar, barbero ve solo lo suyo y no crea.
+
+### Pendiente de la fase (deuda registrada)
+- Timeline con drag & drop, vista semana/mes, filtros/búsqueda.
+- `schedule_blocks` sin UI todavía (tabla y RLS listas).
+- Validación de disponibilidad contra horario del barbero
+  (`barber_profiles.schedule`) y `time_off` aprobado — hoy solo se
+  previene doble-reserva; la disponibilidad completa llega con el
+  portal de reservas (F6) como RPC `available_slots`.
+
+## Fase 6 — Reservas online (siguiente)
+
+Por arrancar: portal público `/[slug]` (selección servicio → barbero →
+fecha/hora → confirmación), RPC `available_slots` (horario barbero −
+citas − bloqueos − ausencias), auto-registro de cliente.
 
 ## Deuda técnica
 

@@ -150,6 +150,44 @@ export type TimeOff = {
   updated_at: string;
 };
 
+export type AppointmentStatus =
+  | "scheduled"
+  | "confirmed"
+  | "in_progress"
+  | "completed"
+  | "cancelled"
+  | "no_show";
+
+export type Appointment = {
+  id: string;
+  tenant_id: string;
+  branch_id: string | null;
+  client_id: string;
+  membership_id: string;
+  service_id: string;
+  starts_at: string;
+  ends_at: string;
+  status: AppointmentStatus;
+  price: number;
+  notes: string | null;
+  cancel_reason: string | null;
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ScheduleBlock = {
+  id: string;
+  tenant_id: string;
+  branch_id: string | null;
+  membership_id: string | null;
+  starts_at: string;
+  ends_at: string;
+  reason: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
 export type Database = {
   public: {
     Tables: {
@@ -348,6 +386,87 @@ export type Database = {
           },
         ];
       };
+      appointments: {
+        Row: Appointment;
+        Insert: Pick<
+          Appointment,
+          | "tenant_id"
+          | "client_id"
+          | "membership_id"
+          | "service_id"
+          | "starts_at"
+          | "ends_at"
+          | "price"
+        > &
+          Partial<Appointment>;
+        Update: Partial<Appointment>;
+        Relationships: [
+          {
+            foreignKeyName: "appointments_tenant_id_fkey";
+            columns: ["tenant_id"];
+            isOneToOne: false;
+            referencedRelation: "tenants";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "appointments_branch_id_fkey";
+            columns: ["branch_id"];
+            isOneToOne: false;
+            referencedRelation: "branches";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "appointments_client_id_fkey";
+            columns: ["client_id"];
+            isOneToOne: false;
+            referencedRelation: "clients";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "appointments_membership_id_fkey";
+            columns: ["membership_id"];
+            isOneToOne: false;
+            referencedRelation: "memberships";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "appointments_service_id_fkey";
+            columns: ["service_id"];
+            isOneToOne: false;
+            referencedRelation: "services";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      schedule_blocks: {
+        Row: ScheduleBlock;
+        Insert: Pick<ScheduleBlock, "tenant_id" | "starts_at" | "ends_at"> &
+          Partial<ScheduleBlock>;
+        Update: Partial<ScheduleBlock>;
+        Relationships: [
+          {
+            foreignKeyName: "schedule_blocks_tenant_id_fkey";
+            columns: ["tenant_id"];
+            isOneToOne: false;
+            referencedRelation: "tenants";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "schedule_blocks_branch_id_fkey";
+            columns: ["branch_id"];
+            isOneToOne: false;
+            referencedRelation: "branches";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "schedule_blocks_membership_id_fkey";
+            columns: ["membership_id"];
+            isOneToOne: false;
+            referencedRelation: "memberships";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: Record<string, never>;
     Functions: {
@@ -379,6 +498,7 @@ export type Database = {
     Enums: {
       member_role: MemberRole;
       time_off_status: TimeOffStatus;
+      appointment_status: AppointmentStatus;
     };
     CompositeTypes: Record<string, never>;
   };
