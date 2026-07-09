@@ -20,7 +20,7 @@ export function LandingNav() {
         <nav className="flex w-full items-center justify-between gap-2 rounded-full border border-white/10 bg-black/50 py-2 pl-5 pr-2 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] backdrop-blur-2xl sm:w-auto sm:gap-6">
           <Link
             href="/"
-            className="flex items-center gap-2 text-sm font-semibold tracking-tight text-white"
+            className="flex items-center gap-2 font-heading text-sm font-semibold tracking-tight text-white"
             onClick={() => setOpen(false)}
           >
             <span className="h-1.5 w-1.5 rounded-full bg-amber-300" />
@@ -87,7 +87,7 @@ export function LandingNav() {
               href={l.href}
               onClick={() => setOpen(false)}
               style={{ transitionDelay: open ? `${100 + i * 60}ms` : "0ms" }}
-              className={`block text-3xl font-semibold tracking-tight text-white transition-all duration-700 ${EASE} ${
+              className={`block font-heading text-3xl font-semibold tracking-tight text-white transition-all duration-700 ${EASE} ${
                 open ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"
               }`}
             >
@@ -98,7 +98,7 @@ export function LandingNav() {
             href="/login"
             onClick={() => setOpen(false)}
             style={{ transitionDelay: open ? "280ms" : "0ms" }}
-            className={`block text-3xl font-semibold tracking-tight text-white/60 transition-all duration-700 ${EASE} ${
+            className={`block font-heading text-3xl font-semibold tracking-tight text-white/60 transition-all duration-700 ${EASE} ${
               open ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"
             }`}
           >

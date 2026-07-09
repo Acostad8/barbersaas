@@ -153,7 +153,7 @@ export default async function LandingPage() {
             </Reveal>
 
             <Reveal delay={100}>
-              <h1 className="mx-auto mt-8 max-w-4xl text-5xl font-semibold leading-[1.02] tracking-[-0.03em] sm:text-7xl">
+              <h1 className="mx-auto mt-8 max-w-4xl font-heading text-5xl font-semibold leading-[1.02] tracking-[-0.03em] sm:text-7xl">
                 Tu barbería,{" "}
                 <span className="text-amber-300">afilada</span>{" "}
                 de punta a punta
@@ -216,7 +216,7 @@ export default async function LandingPage() {
               <span className="inline-block rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-white/60">
                 Funciones
               </span>
-              <h2 className="mx-auto mt-6 max-w-2xl text-3xl font-semibold tracking-[-0.02em] sm:text-5xl">
+              <h2 className="mx-auto mt-6 max-w-2xl font-heading text-3xl font-semibold tracking-[-0.02em] sm:text-5xl">
                 Todo lo que tu negocio necesita
               </h2>
             </Reveal>
@@ -228,7 +228,7 @@ export default async function LandingPage() {
                     <span className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-amber-200/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)]">
                       {f.icon}
                     </span>
-                    <h3 className="mt-6 text-lg font-medium tracking-tight">
+                    <h3 className="mt-6 font-heading text-lg font-medium tracking-tight">
                       {f.title}
                     </h3>
                     <p className="mt-2 max-w-md text-sm leading-relaxed text-white/50">
@@ -251,7 +251,7 @@ export default async function LandingPage() {
               <span className="inline-block rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-white/60">
                 Precios
               </span>
-              <h2 className="mx-auto mt-6 max-w-2xl text-3xl font-semibold tracking-[-0.02em] sm:text-5xl">
+              <h2 className="mx-auto mt-6 max-w-2xl font-heading text-3xl font-semibold tracking-[-0.02em] sm:text-5xl">
                 Planes simples y transparentes
               </h2>
             </Reveal>
@@ -270,7 +270,7 @@ export default async function LandingPage() {
                     >
                       <div className="flex flex-1 flex-col rounded-[calc(2rem-0.375rem)] bg-[#0a0a0a] p-7 shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)]">
                         <div className="flex items-center justify-between">
-                          <h3 className="text-lg font-medium tracking-tight">
+                          <h3 className="font-heading text-lg font-medium tracking-tight">
                             {p.name}
                           </h3>
                           {pro && (
@@ -352,7 +352,7 @@ export default async function LandingPage() {
               <span className="inline-block rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-white/60">
                 FAQ
               </span>
-              <h2 className="mt-6 text-3xl font-semibold tracking-[-0.02em] sm:text-4xl">
+              <h2 className="mt-6 font-heading text-3xl font-semibold tracking-[-0.02em] sm:text-4xl">
                 Preguntas frecuentes
               </h2>
             </Reveal>
@@ -368,7 +368,7 @@ export default async function LandingPage() {
             <div className="absolute bottom-[-14rem] left-1/2 h-[30rem] w-[30rem] -translate-x-1/2 rounded-full bg-amber-400/15 blur-[130px]" />
           </div>
           <Reveal className="relative mx-auto max-w-3xl text-center">
-            <h2 className="text-3xl font-semibold tracking-[-0.02em] sm:text-5xl">
+            <h2 className="font-heading text-3xl font-semibold tracking-[-0.02em] sm:text-5xl">
               Empieza hoy, configura tu barbería en minutos
             </h2>
             <p className="mx-auto mt-4 max-w-md text-white/50">
