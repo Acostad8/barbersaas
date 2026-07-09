@@ -92,6 +92,64 @@ export type Branch = {
   updated_at: string;
 };
 
+export type ServiceCategory = {
+  id: string;
+  tenant_id: string;
+  name: string;
+  sort_order: number;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export type Service = {
+  id: string;
+  tenant_id: string;
+  category_id: string | null;
+  name: string;
+  description: string | null;
+  duration_minutes: number;
+  price: number;
+  commission_rate: number;
+  tax_rate: number;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export type BarberProfile = {
+  membership_id: string;
+  tenant_id: string;
+  bio: string | null;
+  specialties: string[];
+  schedule: WeeklySchedule;
+  commission_rate: number | null;
+  hired_at: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type BarberService = {
+  membership_id: string;
+  service_id: string;
+  tenant_id: string;
+  created_at: string;
+};
+
+export type TimeOffStatus = "pending" | "approved" | "rejected";
+
+export type TimeOff = {
+  id: string;
+  tenant_id: string;
+  membership_id: string;
+  starts_on: string;
+  ends_on: string;
+  reason: string | null;
+  status: TimeOffStatus;
+  created_at: string;
+  updated_at: string;
+};
+
 export type Database = {
   public: {
     Tables: {
@@ -171,6 +229,125 @@ export type Database = {
           },
         ];
       };
+      service_categories: {
+        Row: ServiceCategory;
+        Insert: Pick<ServiceCategory, "tenant_id" | "name"> &
+          Partial<ServiceCategory>;
+        Update: Partial<ServiceCategory>;
+        Relationships: [
+          {
+            foreignKeyName: "service_categories_tenant_id_fkey";
+            columns: ["tenant_id"];
+            isOneToOne: false;
+            referencedRelation: "tenants";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      services: {
+        Row: Service;
+        Insert: Pick<
+          Service,
+          "tenant_id" | "name" | "duration_minutes" | "price"
+        > &
+          Partial<Service>;
+        Update: Partial<Service>;
+        Relationships: [
+          {
+            foreignKeyName: "services_tenant_id_fkey";
+            columns: ["tenant_id"];
+            isOneToOne: false;
+            referencedRelation: "tenants";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "services_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "service_categories";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      barber_profiles: {
+        Row: BarberProfile;
+        Insert: Pick<BarberProfile, "membership_id" | "tenant_id"> &
+          Partial<BarberProfile>;
+        Update: Partial<BarberProfile>;
+        Relationships: [
+          {
+            foreignKeyName: "barber_profiles_membership_id_fkey";
+            columns: ["membership_id"];
+            isOneToOne: true;
+            referencedRelation: "memberships";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "barber_profiles_tenant_id_fkey";
+            columns: ["tenant_id"];
+            isOneToOne: false;
+            referencedRelation: "tenants";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      barber_services: {
+        Row: BarberService;
+        Insert: Pick<
+          BarberService,
+          "membership_id" | "service_id" | "tenant_id"
+        > &
+          Partial<BarberService>;
+        Update: Partial<BarberService>;
+        Relationships: [
+          {
+            foreignKeyName: "barber_services_membership_id_fkey";
+            columns: ["membership_id"];
+            isOneToOne: false;
+            referencedRelation: "memberships";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "barber_services_service_id_fkey";
+            columns: ["service_id"];
+            isOneToOne: false;
+            referencedRelation: "services";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "barber_services_tenant_id_fkey";
+            columns: ["tenant_id"];
+            isOneToOne: false;
+            referencedRelation: "tenants";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      time_off: {
+        Row: TimeOff;
+        Insert: Pick<
+          TimeOff,
+          "tenant_id" | "membership_id" | "starts_on" | "ends_on"
+        > &
+          Partial<TimeOff>;
+        Update: Partial<TimeOff>;
+        Relationships: [
+          {
+            foreignKeyName: "time_off_tenant_id_fkey";
+            columns: ["tenant_id"];
+            isOneToOne: false;
+            referencedRelation: "tenants";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "time_off_membership_id_fkey";
+            columns: ["membership_id"];
+            isOneToOne: false;
+            referencedRelation: "memberships";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: Record<string, never>;
     Functions: {
@@ -190,9 +367,18 @@ export type Database = {
         Args: { p_user_id: string };
         Returns: boolean;
       };
+      owns_membership: {
+        Args: { p_membership_id: string };
+        Returns: boolean;
+      };
+      get_user_id_by_email: {
+        Args: { p_email: string };
+        Returns: string | null;
+      };
     };
     Enums: {
       member_role: MemberRole;
+      time_off_status: TimeOffStatus;
     };
     CompositeTypes: Record<string, never>;
   };

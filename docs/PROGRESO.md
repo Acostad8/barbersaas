@@ -11,7 +11,7 @@
 | 1 | Fundación (scaffold, esquema multi-tenant, auth, roles, RLS) | ✅ completa (pendientes menores abajo) |
 | 2 | Gestión de barbería y sucursales | ✅ completa |
 | 3 | Clientes | ✅ completa (historial/métricas llegan con agenda/POS) |
-| 4 | Servicios y empleados | ⬜ |
+| 4 | Servicios y empleados | ✅ completa (paquetes/promos → F10, metas → F9) |
 | 5 | Agenda inteligente | ⬜ |
 | 6 | Reservas online | ⬜ |
 | 7 | Inventario | ⬜ |
@@ -158,11 +158,44 @@
   derivados de agenda (F5) y POS (F8).
 - `referred_by` sin UI aún (se conecta en marketing/fidelización F10).
 
-## Fase 4 — Servicios y empleados (siguiente)
+## Fase 4 — Servicios y empleados (COMPLETA 2026-07-08)
 
-Por arrancar: categorías de servicios, duración, precio, comisión,
-impuestos; paquetes/promos; ficha de empleado (especialidades, horarios,
-vacaciones, comisiones).
+### Hecho
+- Migraciones `20260709010551_services_and_staff` y
+  `20260709010839_get_user_id_by_email` (vía MCP, misma excepción):
+  - `service_categories`, `services` (duración 5-480 min, precio ≥ 0,
+    comisión/impuesto 0-100%, checks en DB — reglas de negocio en DB).
+  - `barber_profiles` (PK = membership_id): bio, especialidades[],
+    horario JSONB, comisión override, fecha contratación. Barbero puede
+    editar su propia ficha (policy `owns_membership`).
+  - `barber_services` M2M (solo admin/manager gestionan).
+  - `time_off` con enum status: staff solicita la suya (policy fuerza
+    `pending`), admin/manager aprueba/rechaza.
+  - `get_user_id_by_email`: security definer SOLO service_role (evita
+    enumeración de correos); usado por addMemberAction tras verificar
+    permisos del caller.
+- `/dashboard/servicios`: categorías inline + CRUD servicios con precio
+  formateado (Intl, moneda del tenant), comisión, impuesto, activar/off.
+- `/dashboard/equipo`: listado de miembros (rol, sede, especialidades),
+  agregar miembro por email de usuario registrado, editar rol/sede/activo
+  (bloqueado editarse a sí mismo), ficha de barbero, sección de ausencias
+  con aprobar/rechazar.
+- Tests 67/67. Build OK (12 rutas). Smoke `scripts/smoke-services.mjs`:
+  precio negativo rechazado por check, barbero no crea servicios ni se
+  auto-asigna, solicita ausencia (queda pending), no se auto-aprueba,
+  owner aprueba, barbero edita su propia bio. Todo verde.
+
+### Diferido
+- Paquetes y promociones → F10 (marketing).
+- Metas e indicadores de productividad → F9 (reportes).
+- Invitación de usuarios no registrados (email invite) → deuda técnica;
+  hoy solo se agregan usuarios ya registrados.
+
+## Fase 5 — Agenda inteligente (siguiente)
+
+Por arrancar: tabla `appointments` (cliente, barbero, servicio, sede,
+inicio/fin, estado), validación de solapamientos en DB, calendario
+día/semana con timeline, bloqueos de horario.
 
 ## Deuda técnica
 
