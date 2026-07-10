@@ -145,7 +145,7 @@ export default async function LandingPage() {
     }).format(n);
 
   return (
-    <div className="min-h-[100dvh] overflow-x-clip bg-[#FDFBF7] font-body text-[#241C14] selection:bg-[#241C14] selection:text-[#FDFBF7] dark:bg-[#0C0A08] dark:text-[#F2EAE0] dark:selection:bg-[#F2EAE0] dark:selection:text-[#241C14]">
+    <div className="min-h-[100dvh] overflow-x-clip bg-[#FDFBF7] text-[#241C14] selection:bg-[#241C14] selection:text-[#FDFBF7] dark:bg-[#0C0A08] dark:text-[#F2EAE0] dark:selection:bg-[#F2EAE0] dark:selection:text-[#241C14]">
       <div
         aria-hidden
         className="pointer-events-none fixed inset-0 z-10 opacity-[0.04] mix-blend-multiply dark:opacity-[0.05] dark:mix-blend-soft-light"
@@ -407,7 +407,7 @@ export default async function LandingPage() {
                             ? "Gratis"
                             : money(p.price_monthly, p.currency)}
                           {p.price_monthly > 0 && (
-                            <span className="font-body text-sm font-normal text-[#241C14]/50 dark:text-[#F2EAE0]/50">
+                            <span className="font-sans text-sm font-normal text-[#241C14]/50 dark:text-[#F2EAE0]/50">
                               {" "}
                               /mes
                             </span>

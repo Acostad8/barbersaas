@@ -1,18 +1,8 @@
 import type { Metadata } from "next";
-import {
-  Fraunces,
-  Geist,
-  Geist_Mono,
-  Plus_Jakarta_Sans,
-} from "next/font/google";
+import { Fraunces, Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { QueryProvider } from "@/components/providers/QueryProvider";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -26,7 +16,7 @@ const fraunces = Fraunces({
 });
 
 const jakarta = Plus_Jakarta_Sans({
-  variable: "--font-jakarta",
+  variable: "--font-sans",
   subsets: ["latin"],
 });
 
@@ -44,7 +34,7 @@ export default function RootLayout({
     <html
       lang="es"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} ${jakarta.variable} h-full antialiased`}
+      className={`${geistMono.variable} ${fraunces.variable} ${jakarta.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <ThemeProvider
