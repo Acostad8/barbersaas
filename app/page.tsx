@@ -54,7 +54,7 @@ const FEATURES: {
       "Calendario por barbero con estados de cita y anti doble-reserva garantizado a nivel de base de datos. Ningún cruce de horarios, nunca.",
     icon: <IconCalendar />,
     span: "md:col-span-8",
-    tint: "border-amber-300/20 bg-amber-300/10 text-amber-300",
+    tint: "border-amber-600/20 bg-amber-100 text-amber-800",
   },
   {
     title: "Reservas online",
@@ -62,7 +62,7 @@ const FEATURES: {
       "Tu propia página pública: tus clientes eligen servicio, barbero y hora con disponibilidad real.",
     icon: <IconGlobe />,
     span: "md:col-span-4",
-    tint: "border-sky-400/20 bg-sky-400/10 text-sky-300",
+    tint: "border-sky-600/20 bg-sky-100 text-sky-800",
   },
   {
     title: "Punto de venta",
@@ -70,7 +70,7 @@ const FEATURES: {
       "Multipago, propinas, cupones y cierre de caja con arqueo exacto.",
     icon: <IconCard />,
     span: "md:col-span-4",
-    tint: "border-emerald-400/20 bg-emerald-400/10 text-emerald-300",
+    tint: "border-emerald-600/20 bg-emerald-100 text-emerald-800",
   },
   {
     title: "Inventario con kardex",
@@ -78,7 +78,7 @@ const FEATURES: {
       "Stock por sede, alertas de mínimos y un historial de movimientos inmutable que nunca se puede adulterar. La sobreventa es imposible por diseño.",
     icon: <IconBox />,
     span: "md:col-span-8",
-    tint: "border-violet-400/20 bg-violet-400/10 text-violet-300",
+    tint: "border-violet-600/20 bg-violet-100 text-violet-800",
   },
   {
     title: "Reportes y finanzas",
@@ -86,7 +86,7 @@ const FEATURES: {
       "Ventas, comisiones, flujo de caja y horas pico. Exporta todo a CSV con un clic.",
     icon: <IconChart />,
     span: "md:col-span-6",
-    tint: "border-rose-400/20 bg-rose-400/10 text-rose-300",
+    tint: "border-rose-600/20 bg-rose-100 text-rose-800",
   },
   {
     title: "Fidelización",
@@ -94,7 +94,25 @@ const FEATURES: {
       "Cupones, programa de puntos automático y segmentación de clientes frecuentes e inactivos.",
     icon: <IconSpark />,
     span: "md:col-span-6",
-    tint: "border-teal-400/20 bg-teal-400/10 text-teal-300",
+    tint: "border-teal-600/20 bg-teal-100 text-teal-800",
+  },
+];
+
+const STEPS = [
+  {
+    n: "01",
+    title: "Crea tu barbería",
+    desc: "Regístrate y configura tu negocio y tus sedes en minutos, sin tarjeta de crédito.",
+  },
+  {
+    n: "02",
+    title: "Configura tu equipo",
+    desc: "Servicios, precios, comisiones y horarios de cada barbero, todo desde el panel.",
+  },
+  {
+    n: "03",
+    title: "Comparte tu enlace",
+    desc: "Tus clientes reservan online con disponibilidad real y tú lo controlas todo.",
   },
 ];
 
@@ -133,10 +151,10 @@ export default async function LandingPage() {
     }).format(n);
 
   return (
-    <div className="min-h-[100dvh] overflow-x-clip bg-[#050505] font-body text-white selection:bg-amber-300 selection:text-black">
+    <div className="min-h-[100dvh] overflow-x-clip bg-[#FDFBF7] font-body text-[#241C14] selection:bg-[#241C14] selection:text-[#FDFBF7]">
       <div
         aria-hidden
-        className="pointer-events-none fixed inset-0 z-10 opacity-[0.035] mix-blend-soft-light"
+        className="pointer-events-none fixed inset-0 z-10 opacity-[0.04] mix-blend-multiply"
         style={{ backgroundImage: NOISE_BG }}
       />
 
@@ -146,31 +164,29 @@ export default async function LandingPage() {
         {/* ── Hero ─────────────────────────────────────────────── */}
         <section className="relative overflow-hidden px-4 pb-24 pt-40 sm:pb-32 sm:pt-52">
           <div aria-hidden className="pointer-events-none absolute inset-0">
-            <div className="absolute -top-48 left-1/2 h-[40rem] w-[40rem] -translate-x-1/2 rounded-full bg-amber-400/25 blur-[130px] motion-safe:animate-[orb-float_16s_ease-in-out_infinite]" />
-            <div className="absolute -left-40 top-64 h-[28rem] w-[28rem] rounded-full bg-violet-500/20 blur-[110px] motion-safe:animate-[orb-float_20s_ease-in-out_infinite_reverse]" />
-            <div className="absolute -right-40 top-32 h-[24rem] w-[24rem] rounded-full bg-emerald-400/15 blur-[100px] motion-safe:animate-[orb-float_24s_ease-in-out_infinite]" />
+            <div className="absolute -top-48 left-1/2 h-[40rem] w-[40rem] -translate-x-1/2 rounded-full bg-amber-200/50 blur-[130px] motion-safe:animate-[orb-float_16s_ease-in-out_infinite]" />
+            <div className="absolute -left-40 top-64 h-[28rem] w-[28rem] rounded-full bg-emerald-200/40 blur-[110px] motion-safe:animate-[orb-float_20s_ease-in-out_infinite_reverse]" />
+            <div className="absolute -right-40 top-32 h-[24rem] w-[24rem] rounded-full bg-rose-200/40 blur-[100px] motion-safe:animate-[orb-float_24s_ease-in-out_infinite]" />
           </div>
 
           <div className="relative mx-auto max-w-5xl text-center">
             <Reveal>
-              <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-white/75">
-                <span className="h-1 w-1 rounded-full bg-amber-300" />
+              <span className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/60 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-[#241C14]/70">
+                <span className="h-1 w-1 rounded-full bg-amber-600" />
                 Plataforma todo-en-uno para barberías
               </span>
             </Reveal>
 
             <Reveal delay={100}>
-              <h1 className="mx-auto mt-8 max-w-4xl font-heading text-5xl font-semibold leading-[1.02] tracking-[-0.03em] sm:text-7xl">
+              <h1 className="mx-auto mt-8 max-w-4xl font-heading text-5xl font-medium leading-[1.05] tracking-[-0.02em] sm:text-7xl">
                 Tu barbería,{" "}
-                <span className="text-amber-300 [text-shadow:0_0_45px_rgba(252,211,77,0.45)]">
-                  afilada
-                </span>{" "}
-                de punta a punta
+                <span className="italic text-amber-700">afilada</span> de punta
+                a punta
               </h1>
             </Reveal>
 
             <Reveal delay={200}>
-              <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-white/65 sm:text-lg">
+              <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-[#241C14]/60 sm:text-lg">
                 Agenda, reservas online, caja, inventario y fidelización en una
                 sola plataforma rápida, elegante y sin complicaciones.
               </p>
@@ -178,14 +194,14 @@ export default async function LandingPage() {
 
             <Reveal delay={300}>
               <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                <CtaPill href="/register" variant="gold">
+                <CtaPill href="/register" variant="ink">
                   Crear mi barbería
                 </CtaPill>
                 <CtaPill href="/login" variant="ghost">
                   Ya tengo cuenta
                 </CtaPill>
               </div>
-              <p className="mt-5 text-xs text-white/50">
+              <p className="mt-5 text-xs text-[#241C14]/50">
                 Gratis para siempre en el plan básico · Sin tarjeta de crédito
               </p>
             </Reveal>
@@ -199,7 +215,7 @@ export default async function LandingPage() {
         {/* ── Marquee ──────────────────────────────────────────── */}
         <section
           aria-hidden
-          className="relative overflow-hidden border-y border-white/5 py-6 [mask-image:linear-gradient(to_right,transparent,black_15%,black_85%,transparent)]"
+          className="relative overflow-hidden border-y border-black/5 py-6 [mask-image:linear-gradient(to_right,transparent,black_15%,black_85%,transparent)]"
         >
           <div className="flex w-max motion-safe:animate-[marquee_45s_linear_infinite]">
             {[0, 1].map((copy) => (
@@ -207,10 +223,10 @@ export default async function LandingPage() {
                 {MARQUEE_ITEMS.map((item) => (
                   <span
                     key={`${copy}-${item}`}
-                    className="flex items-center gap-8 pr-8 text-sm uppercase tracking-[0.25em] text-white/45"
+                    className="flex items-center gap-8 pr-8 font-heading text-sm uppercase tracking-[0.25em] text-[#241C14]/40"
                   >
                     {item}
-                    <span className="h-1 w-1 rounded-full bg-amber-300/80" />
+                    <span className="h-1 w-1 rounded-full bg-amber-600/70" />
                   </span>
                 ))}
               </div>
@@ -222,41 +238,25 @@ export default async function LandingPage() {
         <section className="px-4 py-24 sm:py-32">
           <div className="mx-auto max-w-6xl">
             <Reveal className="text-center">
-              <span className="inline-block rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-white/75">
+              <span className="inline-block rounded-full border border-black/10 bg-white/60 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-[#241C14]/70">
                 Cómo funciona
               </span>
-              <h2 className="mx-auto mt-6 max-w-2xl font-heading text-3xl font-semibold tracking-[-0.02em] sm:text-5xl">
+              <h2 className="mx-auto mt-6 max-w-2xl font-heading text-3xl font-medium tracking-[-0.02em] sm:text-5xl">
                 Listo en tres pasos
               </h2>
             </Reveal>
 
             <div className="mt-16 grid gap-10 md:grid-cols-3 md:gap-6">
-              {[
-                {
-                  n: "01",
-                  title: "Crea tu barbería",
-                  desc: "Regístrate y configura tu negocio y tus sedes en minutos, sin tarjeta de crédito.",
-                },
-                {
-                  n: "02",
-                  title: "Configura tu equipo",
-                  desc: "Servicios, precios, comisiones y horarios de cada barbero, todo desde el panel.",
-                },
-                {
-                  n: "03",
-                  title: "Comparte tu enlace",
-                  desc: "Tus clientes reservan online con disponibilidad real y tú lo controlas todo.",
-                },
-              ].map((s, i) => (
+              {STEPS.map((s, i) => (
                 <Reveal key={s.n} delay={i * 120}>
-                  <div className="border-t border-white/15 pt-6">
-                    <span className="font-mono text-sm text-amber-300">
+                  <div className="border-t border-black/15 pt-6">
+                    <span className="font-mono text-sm text-amber-700">
                       {s.n}
                     </span>
                     <h3 className="mt-4 font-heading text-xl font-medium tracking-tight">
                       {s.title}
                     </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-white/65">
+                    <p className="mt-2 text-sm leading-relaxed text-[#241C14]/60">
                       {s.desc}
                     </p>
                   </div>
@@ -270,10 +270,10 @@ export default async function LandingPage() {
         <section id="funciones" className="scroll-mt-28 px-4 py-24 sm:py-36">
           <div className="mx-auto max-w-6xl">
             <Reveal className="text-center">
-              <span className="inline-block rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-white/75">
+              <span className="inline-block rounded-full border border-black/10 bg-white/60 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-[#241C14]/70">
                 Funciones
               </span>
-              <h2 className="mx-auto mt-6 max-w-2xl font-heading text-3xl font-semibold tracking-[-0.02em] sm:text-5xl">
+              <h2 className="mx-auto mt-6 max-w-2xl font-heading text-3xl font-medium tracking-[-0.02em] sm:text-5xl">
                 Todo lo que tu negocio necesita
               </h2>
             </Reveal>
@@ -282,13 +282,15 @@ export default async function LandingPage() {
               {FEATURES.map((f, i) => (
                 <Reveal key={f.title} delay={i * 80} className={f.span}>
                   <BezelCard className="group h-full">
-                    <span className={`flex h-11 w-11 items-center justify-center rounded-full border shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] transition-transform duration-700 ${EASE} group-hover:scale-110 ${f.tint}`}>
+                    <span
+                      className={`flex h-11 w-11 items-center justify-center rounded-full border transition-transform duration-700 ${EASE} group-hover:scale-110 ${f.tint}`}
+                    >
                       {f.icon}
                     </span>
                     <h3 className="mt-6 font-heading text-lg font-medium tracking-tight">
                       {f.title}
                     </h3>
-                    <p className="mt-2 max-w-md text-sm leading-relaxed text-white/65">
+                    <p className="mt-2 max-w-md text-sm leading-relaxed text-[#241C14]/60">
                       {f.description}
                     </p>
                   </BezelCard>
@@ -301,14 +303,14 @@ export default async function LandingPage() {
         {/* ── Planes ───────────────────────────────────────────── */}
         <section
           id="planes"
-          className="scroll-mt-28 border-t border-white/5 px-4 py-24 sm:py-36"
+          className="scroll-mt-28 border-t border-black/5 px-4 py-24 sm:py-36"
         >
           <div className="mx-auto max-w-6xl">
             <Reveal className="text-center">
-              <span className="inline-block rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-white/75">
+              <span className="inline-block rounded-full border border-black/10 bg-white/60 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-[#241C14]/70">
                 Precios
               </span>
-              <h2 className="mx-auto mt-6 max-w-2xl font-heading text-3xl font-semibold tracking-[-0.02em] sm:text-5xl">
+              <h2 className="mx-auto mt-6 max-w-2xl font-heading text-3xl font-medium tracking-[-0.02em] sm:text-5xl">
                 Planes simples y transparentes
               </h2>
             </Reveal>
@@ -319,38 +321,38 @@ export default async function LandingPage() {
                 return (
                   <Reveal key={p.id} delay={i * 100} className="h-full">
                     <div
-                      className={`flex h-full flex-col rounded-[2rem] border p-1.5 transition-transform duration-700 ${EASE} hover:-translate-y-1 ${
+                      className={`flex h-full flex-col rounded-[2rem] border p-1.5 transition-all duration-700 ${EASE} hover:-translate-y-1 ${
                         pro
-                          ? "border-amber-300/40 bg-amber-300/[0.08] shadow-[0_0_60px_rgba(252,211,77,0.12)]"
-                          : "border-white/10 bg-white/[0.03]"
+                          ? "border-amber-600/30 bg-amber-100/60 shadow-[0_24px_60px_-32px_rgba(180,83,9,0.45)]"
+                          : "border-black/10 bg-black/[0.03]"
                       }`}
                     >
-                      <div className="flex flex-1 flex-col rounded-[calc(2rem-0.375rem)] bg-[#0a0a0a] p-7 shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)]">
+                      <div className="flex flex-1 flex-col rounded-[calc(2rem-0.375rem)] bg-white p-7 shadow-[0_16px_40px_-28px_rgba(38,28,20,0.35)]">
                         <div className="flex items-center justify-between">
                           <h3 className="font-heading text-lg font-medium tracking-tight">
                             {p.name}
                           </h3>
                           {pro && (
-                            <span className="rounded-full bg-amber-300 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.15em] text-black">
+                            <span className="rounded-full bg-amber-700 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.15em] text-white">
                               Popular
                             </span>
                           )}
                         </div>
-                        <p className="mt-1 text-sm text-white/60">
+                        <p className="mt-1 text-sm text-[#241C14]/60">
                           {p.description}
                         </p>
-                        <p className="mt-6 text-4xl font-semibold tracking-tight">
+                        <p className="mt-6 font-heading text-4xl font-medium tracking-tight">
                           {p.price_monthly === 0
                             ? "Gratis"
                             : money(p.price_monthly, p.currency)}
                           {p.price_monthly > 0 && (
-                            <span className="text-sm font-normal text-white/40">
+                            <span className="font-body text-sm font-normal text-[#241C14]/50">
                               {" "}
                               /mes
                             </span>
                           )}
                         </p>
-                        <ul className="mt-6 flex-1 space-y-3 text-sm text-white/70">
+                        <ul className="mt-6 flex-1 space-y-3 text-sm text-[#241C14]/70">
                           {p.features.map((f) => (
                             <li key={f} className="flex items-start gap-2.5">
                               <svg
@@ -359,7 +361,7 @@ export default async function LandingPage() {
                                 viewBox="0 0 14 14"
                                 fill="none"
                                 aria-hidden
-                                className="mt-0.5 shrink-0 text-amber-300/70"
+                                className="mt-0.5 shrink-0 text-amber-700"
                               >
                                 <path
                                   d="M2.5 7.5 5.5 10.5 11.5 3.5"
@@ -377,14 +379,14 @@ export default async function LandingPage() {
                           href="/register"
                           className={`group mt-8 flex items-center justify-between rounded-full py-2.5 pl-6 pr-2.5 text-sm font-medium transition-all duration-500 ${EASE} active:scale-[0.98] ${
                             pro
-                              ? "bg-amber-300 text-black hover:bg-amber-200"
-                              : "border border-white/15 bg-white/5 text-white hover:bg-white/10"
+                              ? "bg-[#241C14] text-[#FDFBF7] hover:bg-black"
+                              : "border border-black/15 bg-black/5 text-[#241C14] hover:bg-black/10"
                           }`}
                         >
                           Empezar
                           <span
                             className={`flex h-8 w-8 items-center justify-center rounded-full transition-transform duration-500 ${EASE} group-hover:-translate-y-[1px] group-hover:translate-x-0.5 group-hover:scale-105 ${
-                              pro ? "bg-black/10" : "bg-white/10"
+                              pro ? "bg-white/15" : "bg-black/5"
                             }`}
                           >
                             <IconArrow />
@@ -402,14 +404,14 @@ export default async function LandingPage() {
         {/* ── FAQ ──────────────────────────────────────────────── */}
         <section
           id="faq"
-          className="scroll-mt-28 border-t border-white/5 px-4 py-24 sm:py-36"
+          className="scroll-mt-28 border-t border-black/5 px-4 py-24 sm:py-36"
         >
           <div className="mx-auto max-w-2xl">
             <Reveal className="text-center">
-              <span className="inline-block rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-white/75">
+              <span className="inline-block rounded-full border border-black/10 bg-white/60 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-[#241C14]/70">
                 FAQ
               </span>
-              <h2 className="mt-6 font-heading text-3xl font-semibold tracking-[-0.02em] sm:text-4xl">
+              <h2 className="mt-6 font-heading text-3xl font-medium tracking-[-0.02em] sm:text-4xl">
                 Preguntas frecuentes
               </h2>
             </Reveal>
@@ -422,18 +424,19 @@ export default async function LandingPage() {
         {/* ── CTA final ────────────────────────────────────────── */}
         <section className="relative overflow-hidden px-4 py-28 sm:py-40">
           <div aria-hidden className="pointer-events-none absolute inset-0">
-            <div className="absolute bottom-[-14rem] left-1/2 h-[30rem] w-[30rem] -translate-x-1/2 rounded-full bg-amber-400/15 blur-[130px]" />
+            <div className="absolute bottom-[-14rem] left-1/2 h-[30rem] w-[30rem] -translate-x-1/2 rounded-full bg-amber-200/60 blur-[130px]" />
           </div>
           <Reveal className="relative mx-auto max-w-3xl text-center">
-            <h2 className="font-heading text-3xl font-semibold tracking-[-0.02em] sm:text-5xl">
-              Empieza hoy, configura tu barbería en minutos
+            <h2 className="font-heading text-3xl font-medium tracking-[-0.02em] sm:text-5xl">
+              Empieza hoy, configura tu barbería en{" "}
+              <span className="italic text-amber-700">minutos</span>
             </h2>
-            <p className="mx-auto mt-4 max-w-md text-white/65">
+            <p className="mx-auto mt-4 max-w-md text-[#241C14]/60">
               Sin tarjeta, sin instalación. Tu agenda y tu página de reservas
               quedan listas el mismo día.
             </p>
             <div className="mt-10 flex justify-center">
-              <CtaPill href="/register" variant="gold">
+              <CtaPill href="/register" variant="ink">
                 Crear cuenta gratis
               </CtaPill>
             </div>
@@ -441,22 +444,22 @@ export default async function LandingPage() {
         </section>
       </main>
 
-      <footer className="border-t border-white/5">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-4 py-10 text-sm text-white/50 sm:flex-row">
+      <footer className="border-t border-black/5">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-4 py-10 text-sm text-[#241C14]/50 sm:flex-row">
           <p className="flex items-center gap-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-amber-300/60" />©{" "}
+            <span className="h-1.5 w-1.5 rounded-full bg-amber-600/70" />©{" "}
             {new Date().getFullYear()} BarberSaaS
           </p>
           <div className="flex gap-6">
             <Link
               href="/login"
-              className="transition-colors duration-300 hover:text-white"
+              className="transition-colors duration-300 hover:text-[#241C14]"
             >
               Iniciar sesión
             </Link>
             <Link
               href="/register"
-              className="transition-colors duration-300 hover:text-white"
+              className="transition-colors duration-300 hover:text-[#241C14]"
             >
               Registrarse
             </Link>
@@ -475,22 +478,22 @@ function CtaPill({
   children,
 }: {
   href: string;
-  variant: "gold" | "ghost";
+  variant: "ink" | "ghost";
   children: React.ReactNode;
 }) {
   return (
     <Link
       href={href}
       className={`group inline-flex items-center gap-3 rounded-full py-2.5 pl-6 pr-2.5 text-sm font-medium transition-all duration-500 ${EASE} active:scale-[0.98] ${
-        variant === "gold"
-          ? "bg-amber-300 text-black shadow-[0_0_35px_rgba(252,211,77,0.3)] hover:bg-amber-200 hover:shadow-[0_0_55px_rgba(252,211,77,0.45)]"
-          : "border border-white/15 bg-white/5 text-white hover:bg-white/10"
+        variant === "ink"
+          ? "bg-[#241C14] text-[#FDFBF7] shadow-[0_16px_36px_-16px_rgba(38,28,20,0.5)] hover:bg-black hover:shadow-[0_20px_44px_-16px_rgba(38,28,20,0.6)]"
+          : "border border-black/15 bg-white/70 text-[#241C14] hover:bg-white"
       }`}
     >
       {children}
       <span
         className={`flex h-8 w-8 items-center justify-center rounded-full transition-transform duration-500 ${EASE} group-hover:-translate-y-[1px] group-hover:translate-x-0.5 group-hover:scale-105 ${
-          variant === "gold" ? "bg-black/10" : "bg-white/10"
+          variant === "ink" ? "bg-white/15" : "bg-black/5"
         }`}
       >
         <IconArrow />
@@ -508,9 +511,9 @@ function BezelCard({
 }) {
   return (
     <div
-      className={`rounded-[2rem] border border-white/10 bg-white/[0.03] p-1.5 transition-all duration-700 ${EASE} hover:-translate-y-1 hover:border-amber-300/20 ${className ?? ""}`}
+      className={`rounded-[2rem] border border-black/10 bg-black/[0.03] p-1.5 transition-all duration-700 ${EASE} hover:-translate-y-1 hover:border-amber-600/30 ${className ?? ""}`}
     >
-      <div className="h-full rounded-[calc(2rem-0.375rem)] bg-[#0a0a0a] p-7 shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)] sm:p-8">
+      <div className="h-full rounded-[calc(2rem-0.375rem)] bg-white p-7 shadow-[0_16px_40px_-28px_rgba(38,28,20,0.35)] sm:p-8">
         {children}
       </div>
     </div>
@@ -528,19 +531,19 @@ function AgendaMock() {
         {
           top: 8,
           h: 24,
-          c: "bg-amber-300/20 border-amber-300/40 text-amber-200",
+          c: "bg-amber-100 border-amber-300 text-amber-900",
           label: "Corte · 9:00",
         },
         {
           top: 38,
           h: 30,
-          c: "bg-emerald-400/20 border-emerald-400/40 text-emerald-200",
+          c: "bg-emerald-100 border-emerald-300 text-emerald-900",
           label: "Corte + barba · 10:00",
         },
         {
           top: 74,
           h: 18,
-          c: "bg-white/10 border-white/20 text-white/70",
+          c: "bg-stone-100 border-stone-300 text-stone-700",
           label: "Barba · 11:30",
         },
       ],
@@ -551,19 +554,19 @@ function AgendaMock() {
         {
           top: 0,
           h: 26,
-          c: "bg-violet-400/20 border-violet-400/40 text-violet-200",
+          c: "bg-violet-100 border-violet-300 text-violet-900",
           label: "Tinte · 8:30",
         },
         {
           top: 32,
           h: 22,
-          c: "bg-amber-300/20 border-amber-300/40 text-amber-200",
+          c: "bg-amber-100 border-amber-300 text-amber-900",
           label: "Corte · 9:45",
         },
         {
           top: 60,
           h: 32,
-          c: "bg-sky-400/20 border-sky-400/40 text-sky-200",
+          c: "bg-sky-100 border-sky-300 text-sky-900",
           label: "Diseño · 11:00",
         },
       ],
@@ -574,13 +577,13 @@ function AgendaMock() {
         {
           top: 14,
           h: 30,
-          c: "bg-emerald-400/20 border-emerald-400/40 text-emerald-200",
+          c: "bg-emerald-100 border-emerald-300 text-emerald-900",
           label: "Corte + barba · 9:15",
         },
         {
           top: 52,
           h: 24,
-          c: "bg-violet-400/20 border-violet-400/40 text-violet-200",
+          c: "bg-violet-100 border-violet-300 text-violet-900",
           label: "Afeitado · 10:45",
         },
       ],
@@ -588,29 +591,29 @@ function AgendaMock() {
   ];
 
   return (
-    <div className="relative mx-auto mt-20 max-w-4xl rounded-[2rem] border border-white/10 bg-white/[0.04] p-2 text-left">
-      <div className="rounded-[calc(2rem-0.5rem)] border border-white/5 bg-[#0a0a0a] shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)]">
-        <div className="flex items-center justify-between border-b border-white/5 px-5 py-3.5">
+    <div className="relative mx-auto mt-20 max-w-4xl rounded-[2rem] border border-black/10 bg-black/[0.03] p-2 text-left">
+      <div className="rounded-[calc(2rem-0.5rem)] border border-black/5 bg-white shadow-[0_24px_60px_-32px_rgba(38,28,20,0.4)]">
+        <div className="flex items-center justify-between border-b border-black/5 px-5 py-3.5">
           <div className="flex items-center gap-1.5">
-            <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-            <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-            <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
+            <span className="h-2.5 w-2.5 rounded-full bg-black/10" />
+            <span className="h-2.5 w-2.5 rounded-full bg-black/10" />
+            <span className="h-2.5 w-2.5 rounded-full bg-black/10" />
           </div>
-          <p className="text-xs uppercase tracking-[0.2em] text-white/50">
+          <p className="text-xs uppercase tracking-[0.2em] text-[#241C14]/50">
             Agenda · Hoy
           </p>
-          <span className="flex items-center gap-1.5 rounded-full bg-emerald-400/15 px-2 py-0.5 text-[10px] font-medium text-emerald-300">
-            <span className="h-1 w-1 rounded-full bg-emerald-300 motion-safe:animate-pulse" />
+          <span className="flex items-center gap-1.5 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-medium text-emerald-700">
+            <span className="h-1 w-1 rounded-full bg-emerald-600 motion-safe:animate-pulse" />
             En vivo
           </span>
         </div>
         <div className="grid grid-cols-3 gap-3 p-5 sm:gap-4 sm:p-6">
           {cols.map((col) => (
             <div key={col.name}>
-              <p className="mb-3 text-xs font-medium text-white/70">
+              <p className="mb-3 text-xs font-medium text-[#241C14]/70">
                 {col.name}
               </p>
-              <div className="relative h-40 rounded-xl border border-white/5 bg-white/[0.02] sm:h-48">
+              <div className="relative h-40 rounded-xl border border-black/5 bg-[#FDFBF7] sm:h-48">
                 {col.blocks.map((b, i) => (
                   <div
                     key={i}

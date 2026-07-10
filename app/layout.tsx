@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import {
-  Bricolage_Grotesque,
+  Fraunces,
   Geist,
   Geist_Mono,
   Plus_Jakarta_Sans,
@@ -18,9 +18,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const bricolage = Bricolage_Grotesque({
-  variable: "--font-bricolage",
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
   subsets: ["latin"],
+  axes: ["opsz", "SOFT", "WONK"],
 });
 
 const jakarta = Plus_Jakarta_Sans({
@@ -41,7 +42,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${geistSans.variable} ${geistMono.variable} ${bricolage.variable} ${jakarta.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} ${jakarta.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <QueryProvider>{children}</QueryProvider>
