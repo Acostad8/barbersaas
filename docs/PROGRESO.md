@@ -449,6 +449,26 @@ decisión/credencial humana: pasarela de pago, proveedor de
 email/SMS/WhatsApp, API key de IA, credenciales Google OAuth,
 `SUPABASE_ACCESS_TOKEN`/`DB_PASSWORD` para operar migraciones por CLI.
 
+## Rediseño UI (2026-07-09/10)
+
+- Landing rediseñada: layout editorial asimétrico "Editorial Luxury"
+  (crema/espresso, Fraunces serif + Plus Jakarta Sans, hero split con
+  cards flotantes, índice de features numerado, columnas sticky, banda
+  CTA invertida, footer estructurado). Skills de diseño instaladas en
+  `.agents/skills/` guiaron el trabajo (hook impeccable activo).
+- Modo oscuro global: next-themes (clase `.dark`, default sistema),
+  toggle en nav de landing y sidebar del dashboard.
+- Interfaz interna re-tematizada vía tokens shadcn en `globals.css`
+  (paleta cálida crema/espresso en light y dark, radius 0.75rem,
+  charts de colores): todos los módulos heredan sin tocar sus páginas.
+  Titulares h1-h3 en Fraunces vía capa base.
+- Dashboard: sidebar sticky con iconos de trazo fino y estado activo
+  (`components/dashboard/SidebarNav.tsx`), nombre del tenant, toggle
+  de tema, header móvil con nav horizontal (antes no había nav móvil).
+- Auth: layout split-screen con panel de marca espresso; títulos serif
+  en Login/Register/CreateTenant.
+- Pendiente: revisión visual en navegador de dashboard y auth.
+
 ## Deuda técnica
 
 - Invitación de usuarios no registrados (email invite) — hoy solo se

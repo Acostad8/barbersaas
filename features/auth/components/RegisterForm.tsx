@@ -48,7 +48,9 @@ export function RegisterForm() {
     return (
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Revisa tu correo</CardTitle>
+          <CardTitle className="text-2xl font-medium tracking-tight">
+            Revisa tu correo
+          </CardTitle>
           <CardDescription>{successMessage}</CardDescription>
         </CardHeader>
         <CardFooter>
@@ -63,7 +65,9 @@ export function RegisterForm() {
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
-        <CardTitle>Crear cuenta</CardTitle>
+        <CardTitle className="text-2xl font-medium tracking-tight">
+          Crear cuenta
+        </CardTitle>
         <CardDescription>
           Empieza a gestionar tu barbería hoy mismo
         </CardDescription>

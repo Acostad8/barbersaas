@@ -49,7 +49,9 @@ export function CreateTenantForm() {
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
-        <CardTitle>Crea tu barbería</CardTitle>
+        <CardTitle className="text-2xl font-medium tracking-tight">
+          Crea tu barbería
+        </CardTitle>
         <CardDescription>
           Este será tu espacio de trabajo. Podrás agregar sedes, empleados y
           servicios después.

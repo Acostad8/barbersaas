@@ -28,7 +28,7 @@ export default async function OnboardingPage() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-muted/40 p-4">
+    <main className="flex min-h-screen items-center justify-center bg-background p-4">
       <CreateTenantForm />
     </main>
   );

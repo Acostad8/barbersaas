@@ -43,7 +43,9 @@ export function LoginForm() {
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
-        <CardTitle>Iniciar sesión</CardTitle>
+        <CardTitle className="font-heading text-2xl font-medium tracking-tight">
+          Iniciar sesión
+        </CardTitle>
         <CardDescription>
           Ingresa a tu cuenta para gestionar tu barbería
         </CardDescription>
