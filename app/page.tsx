@@ -46,6 +46,7 @@ const FEATURES: {
   description: string;
   icon: React.ReactNode;
   span: string;
+  tint: string;
 }[] = [
   {
     title: "Agenda inteligente",
@@ -53,6 +54,7 @@ const FEATURES: {
       "Calendario por barbero con estados de cita y anti doble-reserva garantizado a nivel de base de datos. Ningún cruce de horarios, nunca.",
     icon: <IconCalendar />,
     span: "md:col-span-8",
+    tint: "border-amber-300/20 bg-amber-300/10 text-amber-300",
   },
   {
     title: "Reservas online",
@@ -60,6 +62,7 @@ const FEATURES: {
       "Tu propia página pública: tus clientes eligen servicio, barbero y hora con disponibilidad real.",
     icon: <IconGlobe />,
     span: "md:col-span-4",
+    tint: "border-sky-400/20 bg-sky-400/10 text-sky-300",
   },
   {
     title: "Punto de venta",
@@ -67,6 +70,7 @@ const FEATURES: {
       "Multipago, propinas, cupones y cierre de caja con arqueo exacto.",
     icon: <IconCard />,
     span: "md:col-span-4",
+    tint: "border-emerald-400/20 bg-emerald-400/10 text-emerald-300",
   },
   {
     title: "Inventario con kardex",
@@ -74,6 +78,7 @@ const FEATURES: {
       "Stock por sede, alertas de mínimos y un historial de movimientos inmutable que nunca se puede adulterar. La sobreventa es imposible por diseño.",
     icon: <IconBox />,
     span: "md:col-span-8",
+    tint: "border-violet-400/20 bg-violet-400/10 text-violet-300",
   },
   {
     title: "Reportes y finanzas",
@@ -81,6 +86,7 @@ const FEATURES: {
       "Ventas, comisiones, flujo de caja y horas pico. Exporta todo a CSV con un clic.",
     icon: <IconChart />,
     span: "md:col-span-6",
+    tint: "border-rose-400/20 bg-rose-400/10 text-rose-300",
   },
   {
     title: "Fidelización",
@@ -88,6 +94,7 @@ const FEATURES: {
       "Cupones, programa de puntos automático y segmentación de clientes frecuentes e inactivos.",
     icon: <IconSpark />,
     span: "md:col-span-6",
+    tint: "border-teal-400/20 bg-teal-400/10 text-teal-300",
   },
 ];
 
@@ -139,14 +146,14 @@ export default async function LandingPage() {
         {/* ── Hero ─────────────────────────────────────────────── */}
         <section className="relative overflow-hidden px-4 pb-24 pt-40 sm:pb-32 sm:pt-52">
           <div aria-hidden className="pointer-events-none absolute inset-0">
-            <div className="absolute -top-48 left-1/2 h-[36rem] w-[36rem] -translate-x-1/2 rounded-full bg-amber-400/15 blur-[130px] motion-safe:animate-[orb-float_16s_ease-in-out_infinite]" />
-            <div className="absolute -left-40 top-64 h-[26rem] w-[26rem] rounded-full bg-violet-500/10 blur-[110px] motion-safe:animate-[orb-float_20s_ease-in-out_infinite_reverse]" />
-            <div className="absolute -right-40 top-32 h-[22rem] w-[22rem] rounded-full bg-emerald-400/8 blur-[100px] motion-safe:animate-[orb-float_24s_ease-in-out_infinite]" />
+            <div className="absolute -top-48 left-1/2 h-[40rem] w-[40rem] -translate-x-1/2 rounded-full bg-amber-400/25 blur-[130px] motion-safe:animate-[orb-float_16s_ease-in-out_infinite]" />
+            <div className="absolute -left-40 top-64 h-[28rem] w-[28rem] rounded-full bg-violet-500/20 blur-[110px] motion-safe:animate-[orb-float_20s_ease-in-out_infinite_reverse]" />
+            <div className="absolute -right-40 top-32 h-[24rem] w-[24rem] rounded-full bg-emerald-400/15 blur-[100px] motion-safe:animate-[orb-float_24s_ease-in-out_infinite]" />
           </div>
 
           <div className="relative mx-auto max-w-5xl text-center">
             <Reveal>
-              <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-white/60">
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-white/75">
                 <span className="h-1 w-1 rounded-full bg-amber-300" />
                 Plataforma todo-en-uno para barberías
               </span>
@@ -155,13 +162,15 @@ export default async function LandingPage() {
             <Reveal delay={100}>
               <h1 className="mx-auto mt-8 max-w-4xl font-heading text-5xl font-semibold leading-[1.02] tracking-[-0.03em] sm:text-7xl">
                 Tu barbería,{" "}
-                <span className="text-amber-300">afilada</span>{" "}
+                <span className="text-amber-300 [text-shadow:0_0_45px_rgba(252,211,77,0.45)]">
+                  afilada
+                </span>{" "}
                 de punta a punta
               </h1>
             </Reveal>
 
             <Reveal delay={200}>
-              <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-white/50 sm:text-lg">
+              <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-white/65 sm:text-lg">
                 Agenda, reservas online, caja, inventario y fidelización en una
                 sola plataforma rápida, elegante y sin complicaciones.
               </p>
@@ -176,7 +185,7 @@ export default async function LandingPage() {
                   Ya tengo cuenta
                 </CtaPill>
               </div>
-              <p className="mt-5 text-xs text-white/35">
+              <p className="mt-5 text-xs text-white/50">
                 Gratis para siempre en el plan básico · Sin tarjeta de crédito
               </p>
             </Reveal>
@@ -198,10 +207,10 @@ export default async function LandingPage() {
                 {MARQUEE_ITEMS.map((item) => (
                   <span
                     key={`${copy}-${item}`}
-                    className="flex items-center gap-8 pr-8 text-sm uppercase tracking-[0.25em] text-white/25"
+                    className="flex items-center gap-8 pr-8 text-sm uppercase tracking-[0.25em] text-white/45"
                   >
                     {item}
-                    <span className="h-1 w-1 rounded-full bg-amber-300/40" />
+                    <span className="h-1 w-1 rounded-full bg-amber-300/80" />
                   </span>
                 ))}
               </div>
@@ -213,7 +222,7 @@ export default async function LandingPage() {
         <section className="px-4 py-24 sm:py-32">
           <div className="mx-auto max-w-6xl">
             <Reveal className="text-center">
-              <span className="inline-block rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-white/60">
+              <span className="inline-block rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-white/75">
                 Cómo funciona
               </span>
               <h2 className="mx-auto mt-6 max-w-2xl font-heading text-3xl font-semibold tracking-[-0.02em] sm:text-5xl">
@@ -240,14 +249,14 @@ export default async function LandingPage() {
                 },
               ].map((s, i) => (
                 <Reveal key={s.n} delay={i * 120}>
-                  <div className="border-t border-white/10 pt-6">
-                    <span className="font-mono text-sm text-amber-300/80">
+                  <div className="border-t border-white/15 pt-6">
+                    <span className="font-mono text-sm text-amber-300">
                       {s.n}
                     </span>
                     <h3 className="mt-4 font-heading text-xl font-medium tracking-tight">
                       {s.title}
                     </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-white/50">
+                    <p className="mt-2 text-sm leading-relaxed text-white/65">
                       {s.desc}
                     </p>
                   </div>
@@ -261,7 +270,7 @@ export default async function LandingPage() {
         <section id="funciones" className="scroll-mt-28 px-4 py-24 sm:py-36">
           <div className="mx-auto max-w-6xl">
             <Reveal className="text-center">
-              <span className="inline-block rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-white/60">
+              <span className="inline-block rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-white/75">
                 Funciones
               </span>
               <h2 className="mx-auto mt-6 max-w-2xl font-heading text-3xl font-semibold tracking-[-0.02em] sm:text-5xl">
@@ -273,13 +282,13 @@ export default async function LandingPage() {
               {FEATURES.map((f, i) => (
                 <Reveal key={f.title} delay={i * 80} className={f.span}>
                   <BezelCard className="group h-full">
-                    <span className={`flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-amber-200/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] transition-all duration-700 ${EASE} group-hover:border-amber-300/30 group-hover:text-amber-300`}>
+                    <span className={`flex h-11 w-11 items-center justify-center rounded-full border shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] transition-transform duration-700 ${EASE} group-hover:scale-110 ${f.tint}`}>
                       {f.icon}
                     </span>
                     <h3 className="mt-6 font-heading text-lg font-medium tracking-tight">
                       {f.title}
                     </h3>
-                    <p className="mt-2 max-w-md text-sm leading-relaxed text-white/50">
+                    <p className="mt-2 max-w-md text-sm leading-relaxed text-white/65">
                       {f.description}
                     </p>
                   </BezelCard>
@@ -296,7 +305,7 @@ export default async function LandingPage() {
         >
           <div className="mx-auto max-w-6xl">
             <Reveal className="text-center">
-              <span className="inline-block rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-white/60">
+              <span className="inline-block rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-white/75">
                 Precios
               </span>
               <h2 className="mx-auto mt-6 max-w-2xl font-heading text-3xl font-semibold tracking-[-0.02em] sm:text-5xl">
@@ -312,7 +321,7 @@ export default async function LandingPage() {
                     <div
                       className={`flex h-full flex-col rounded-[2rem] border p-1.5 transition-transform duration-700 ${EASE} hover:-translate-y-1 ${
                         pro
-                          ? "border-amber-300/25 bg-amber-300/[0.06]"
+                          ? "border-amber-300/40 bg-amber-300/[0.08] shadow-[0_0_60px_rgba(252,211,77,0.12)]"
                           : "border-white/10 bg-white/[0.03]"
                       }`}
                     >
@@ -327,7 +336,7 @@ export default async function LandingPage() {
                             </span>
                           )}
                         </div>
-                        <p className="mt-1 text-sm text-white/45">
+                        <p className="mt-1 text-sm text-white/60">
                           {p.description}
                         </p>
                         <p className="mt-6 text-4xl font-semibold tracking-tight">
@@ -341,7 +350,7 @@ export default async function LandingPage() {
                             </span>
                           )}
                         </p>
-                        <ul className="mt-6 flex-1 space-y-3 text-sm text-white/55">
+                        <ul className="mt-6 flex-1 space-y-3 text-sm text-white/70">
                           {p.features.map((f) => (
                             <li key={f} className="flex items-start gap-2.5">
                               <svg
@@ -397,7 +406,7 @@ export default async function LandingPage() {
         >
           <div className="mx-auto max-w-2xl">
             <Reveal className="text-center">
-              <span className="inline-block rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-white/60">
+              <span className="inline-block rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-white/75">
                 FAQ
               </span>
               <h2 className="mt-6 font-heading text-3xl font-semibold tracking-[-0.02em] sm:text-4xl">
@@ -419,7 +428,7 @@ export default async function LandingPage() {
             <h2 className="font-heading text-3xl font-semibold tracking-[-0.02em] sm:text-5xl">
               Empieza hoy, configura tu barbería en minutos
             </h2>
-            <p className="mx-auto mt-4 max-w-md text-white/50">
+            <p className="mx-auto mt-4 max-w-md text-white/65">
               Sin tarjeta, sin instalación. Tu agenda y tu página de reservas
               quedan listas el mismo día.
             </p>
@@ -433,7 +442,7 @@ export default async function LandingPage() {
       </main>
 
       <footer className="border-t border-white/5">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-4 py-10 text-sm text-white/35 sm:flex-row">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-4 py-10 text-sm text-white/50 sm:flex-row">
           <p className="flex items-center gap-2">
             <span className="h-1.5 w-1.5 rounded-full bg-amber-300/60" />©{" "}
             {new Date().getFullYear()} BarberSaaS
@@ -474,7 +483,7 @@ function CtaPill({
       href={href}
       className={`group inline-flex items-center gap-3 rounded-full py-2.5 pl-6 pr-2.5 text-sm font-medium transition-all duration-500 ${EASE} active:scale-[0.98] ${
         variant === "gold"
-          ? "bg-amber-300 text-black hover:bg-amber-200"
+          ? "bg-amber-300 text-black shadow-[0_0_35px_rgba(252,211,77,0.3)] hover:bg-amber-200 hover:shadow-[0_0_55px_rgba(252,211,77,0.45)]"
           : "border border-white/15 bg-white/5 text-white hover:bg-white/10"
       }`}
     >
@@ -509,53 +518,96 @@ function BezelCard({
 }
 
 function AgendaMock() {
-  const cols: { name: string; blocks: { top: number; h: number; c: string }[] }[] =
-    [
-      {
-        name: "Andrés",
-        blocks: [
-          { top: 8, h: 22, c: "bg-amber-300/20 border-amber-300/30" },
-          { top: 36, h: 30, c: "bg-emerald-400/15 border-emerald-400/25" },
-          { top: 72, h: 18, c: "bg-white/5 border-white/10" },
-        ],
-      },
-      {
-        name: "Camila",
-        blocks: [
-          { top: 0, h: 26, c: "bg-violet-400/15 border-violet-400/25" },
-          { top: 32, h: 20, c: "bg-amber-300/20 border-amber-300/30" },
-          { top: 58, h: 32, c: "bg-white/5 border-white/10" },
-        ],
-      },
-      {
-        name: "Jorge",
-        blocks: [
-          { top: 14, h: 30, c: "bg-emerald-400/15 border-emerald-400/25" },
-          { top: 50, h: 24, c: "bg-violet-400/15 border-violet-400/25" },
-        ],
-      },
-    ];
+  const cols: {
+    name: string;
+    blocks: { top: number; h: number; c: string; label: string }[];
+  }[] = [
+    {
+      name: "Andrés",
+      blocks: [
+        {
+          top: 8,
+          h: 24,
+          c: "bg-amber-300/20 border-amber-300/40 text-amber-200",
+          label: "Corte · 9:00",
+        },
+        {
+          top: 38,
+          h: 30,
+          c: "bg-emerald-400/20 border-emerald-400/40 text-emerald-200",
+          label: "Corte + barba · 10:00",
+        },
+        {
+          top: 74,
+          h: 18,
+          c: "bg-white/10 border-white/20 text-white/70",
+          label: "Barba · 11:30",
+        },
+      ],
+    },
+    {
+      name: "Camila",
+      blocks: [
+        {
+          top: 0,
+          h: 26,
+          c: "bg-violet-400/20 border-violet-400/40 text-violet-200",
+          label: "Tinte · 8:30",
+        },
+        {
+          top: 32,
+          h: 22,
+          c: "bg-amber-300/20 border-amber-300/40 text-amber-200",
+          label: "Corte · 9:45",
+        },
+        {
+          top: 60,
+          h: 32,
+          c: "bg-sky-400/20 border-sky-400/40 text-sky-200",
+          label: "Diseño · 11:00",
+        },
+      ],
+    },
+    {
+      name: "Jorge",
+      blocks: [
+        {
+          top: 14,
+          h: 30,
+          c: "bg-emerald-400/20 border-emerald-400/40 text-emerald-200",
+          label: "Corte + barba · 9:15",
+        },
+        {
+          top: 52,
+          h: 24,
+          c: "bg-violet-400/20 border-violet-400/40 text-violet-200",
+          label: "Afeitado · 10:45",
+        },
+      ],
+    },
+  ];
 
   return (
     <div className="relative mx-auto mt-20 max-w-4xl rounded-[2rem] border border-white/10 bg-white/[0.04] p-2 text-left">
       <div className="rounded-[calc(2rem-0.5rem)] border border-white/5 bg-[#0a0a0a] shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)]">
         <div className="flex items-center justify-between border-b border-white/5 px-5 py-3.5">
           <div className="flex items-center gap-1.5">
-            <span className="h-2.5 w-2.5 rounded-full bg-white/10" />
-            <span className="h-2.5 w-2.5 rounded-full bg-white/10" />
-            <span className="h-2.5 w-2.5 rounded-full bg-white/10" />
+            <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
+            <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
+            <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
           </div>
-          <p className="text-xs uppercase tracking-[0.2em] text-white/40">
+          <p className="text-xs uppercase tracking-[0.2em] text-white/50">
             Agenda · Hoy
           </p>
-          <span className="rounded-full bg-emerald-400/15 px-2 py-0.5 text-[10px] font-medium text-emerald-300">
+          <span className="flex items-center gap-1.5 rounded-full bg-emerald-400/15 px-2 py-0.5 text-[10px] font-medium text-emerald-300">
+            <span className="h-1 w-1 rounded-full bg-emerald-300 motion-safe:animate-pulse" />
             En vivo
           </span>
         </div>
         <div className="grid grid-cols-3 gap-3 p-5 sm:gap-4 sm:p-6">
           {cols.map((col) => (
             <div key={col.name}>
-              <p className="mb-3 text-xs font-medium text-white/60">
+              <p className="mb-3 text-xs font-medium text-white/70">
                 {col.name}
               </p>
               <div className="relative h-40 rounded-xl border border-white/5 bg-white/[0.02] sm:h-48">
@@ -563,8 +615,12 @@ function AgendaMock() {
                   <div
                     key={i}
                     style={{ top: `${b.top}%`, height: `${b.h}%` }}
-                    className={`absolute inset-x-1.5 rounded-lg border ${b.c}`}
-                  />
+                    className={`absolute inset-x-1.5 overflow-hidden rounded-lg border px-1.5 pt-1 ${b.c}`}
+                  >
+                    <span className="block truncate text-[8px] font-medium leading-tight sm:text-[9px]">
+                      {b.label}
+                    </span>
+                  </div>
                 ))}
               </div>
             </div>
