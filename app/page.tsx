@@ -28,73 +28,56 @@ const EASE = "ease-[cubic-bezier(0.32,0.72,0,1)]";
 const NOISE_BG =
   "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")";
 
-const MARQUEE_ITEMS = [
-  "Agenda inteligente",
-  "Reservas online",
-  "Punto de venta",
-  "Inventario",
-  "Reportes",
-  "Finanzas",
-  "Fidelización",
-  "Multi-sede",
-  "Notificaciones",
-  "Analítica",
+const STATS = [
+  { value: "15", suffix: "módulos", label: "integrados en una sola plataforma" },
+  {
+    value: "0",
+    suffix: "dobles reservas",
+    label: "bloqueadas a nivel de base de datos",
+  },
+  {
+    value: "24/7",
+    suffix: "reservas online",
+    label: "tus clientes agendan mientras duermes",
+  },
 ];
 
-const FEATURES: {
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-  span: string;
-  tint: string;
-}[] = [
+const FEATURES = [
   {
+    n: "01",
     title: "Agenda inteligente",
     description:
       "Calendario por barbero con estados de cita y anti doble-reserva garantizado a nivel de base de datos. Ningún cruce de horarios, nunca.",
-    icon: <IconCalendar />,
-    span: "md:col-span-8",
-    tint: "border-amber-600/20 bg-amber-100 text-amber-800",
   },
   {
+    n: "02",
     title: "Reservas online",
     description:
-      "Tu propia página pública: tus clientes eligen servicio, barbero y hora con disponibilidad real.",
-    icon: <IconGlobe />,
-    span: "md:col-span-4",
-    tint: "border-sky-600/20 bg-sky-100 text-sky-800",
+      "Tu propia página pública: tus clientes eligen servicio, barbero y hora con disponibilidad real, sin registrarse.",
   },
   {
+    n: "03",
     title: "Punto de venta",
     description:
-      "Multipago, propinas, cupones y cierre de caja con arqueo exacto.",
-    icon: <IconCard />,
-    span: "md:col-span-4",
-    tint: "border-emerald-600/20 bg-emerald-100 text-emerald-800",
+      "Multipago, propinas, cupones y cierre de caja con arqueo exacto al peso.",
   },
   {
+    n: "04",
     title: "Inventario con kardex",
     description:
-      "Stock por sede, alertas de mínimos y un historial de movimientos inmutable que nunca se puede adulterar. La sobreventa es imposible por diseño.",
-    icon: <IconBox />,
-    span: "md:col-span-8",
-    tint: "border-violet-600/20 bg-violet-100 text-violet-800",
+      "Stock por sede, alertas de mínimos y un historial de movimientos inmutable. La sobreventa es imposible por diseño.",
   },
   {
+    n: "05",
     title: "Reportes y finanzas",
     description:
       "Ventas, comisiones, flujo de caja y horas pico. Exporta todo a CSV con un clic.",
-    icon: <IconChart />,
-    span: "md:col-span-6",
-    tint: "border-rose-600/20 bg-rose-100 text-rose-800",
   },
   {
+    n: "06",
     title: "Fidelización",
     description:
       "Cupones, programa de puntos automático y segmentación de clientes frecuentes e inactivos.",
-    icon: <IconSpark />,
-    span: "md:col-span-6",
-    tint: "border-teal-600/20 bg-teal-100 text-teal-800",
   },
 ];
 
@@ -135,6 +118,17 @@ const FAQS = [
   },
 ];
 
+function SectionMeta({ index, label }: { index: string; label: string }) {
+  return (
+    <p className="flex items-center gap-3 font-mono text-xs text-amber-700">
+      ({index})
+      <span className="uppercase tracking-[0.25em] text-[#241C14]/50">
+        {label}
+      </span>
+    </p>
+  );
+}
+
 export default async function LandingPage() {
   const supabase = await createClient();
   const { data: plans } = await supabase
@@ -161,104 +155,143 @@ export default async function LandingPage() {
       <LandingNav />
 
       <main className="relative">
-        {/* ── Hero ─────────────────────────────────────────────── */}
-        <section className="relative overflow-hidden px-4 pb-24 pt-40 sm:pb-32 sm:pt-52">
+        {/* ── Hero: split editorial ────────────────────────────── */}
+        <section className="relative overflow-hidden px-4 pb-20 pt-36 sm:pt-48 lg:pb-28">
           <div aria-hidden className="pointer-events-none absolute inset-0">
-            <div className="absolute -top-48 left-1/2 h-[40rem] w-[40rem] -translate-x-1/2 rounded-full bg-amber-200/50 blur-[130px] motion-safe:animate-[orb-float_16s_ease-in-out_infinite]" />
-            <div className="absolute -left-40 top-64 h-[28rem] w-[28rem] rounded-full bg-emerald-200/40 blur-[110px] motion-safe:animate-[orb-float_20s_ease-in-out_infinite_reverse]" />
-            <div className="absolute -right-40 top-32 h-[24rem] w-[24rem] rounded-full bg-rose-200/40 blur-[100px] motion-safe:animate-[orb-float_24s_ease-in-out_infinite]" />
+            <div className="absolute -top-40 right-[-10rem] h-[36rem] w-[36rem] rounded-full bg-amber-200/50 blur-[130px] motion-safe:animate-[orb-float_18s_ease-in-out_infinite]" />
+            <div className="absolute -left-40 bottom-[-10rem] h-[26rem] w-[26rem] rounded-full bg-emerald-200/40 blur-[110px] motion-safe:animate-[orb-float_24s_ease-in-out_infinite_reverse]" />
           </div>
 
-          <div className="relative mx-auto max-w-5xl text-center">
-            <Reveal>
-              <span className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/60 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-[#241C14]/70">
-                <span className="h-1 w-1 rounded-full bg-amber-600" />
-                Plataforma todo-en-uno para barberías
-              </span>
-            </Reveal>
+          <div className="relative mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-12 lg:gap-8">
+            <div className="lg:col-span-6">
+              <Reveal>
+                <SectionMeta index="00" label="Software de gestión" />
+              </Reveal>
+              <Reveal delay={100}>
+                <h1 className="mt-6 font-heading text-5xl font-medium leading-[1.02] tracking-[-0.02em] sm:text-6xl xl:text-7xl">
+                  El oficio es tuyo.
+                  <br />
+                  El orden,{" "}
+                  <span className="italic text-amber-700">nuestro.</span>
+                </h1>
+              </Reveal>
+              <Reveal delay={200}>
+                <p className="mt-6 max-w-md text-base leading-relaxed text-[#241C14]/60 sm:text-lg">
+                  Agenda, reservas online, caja, inventario y fidelización para
+                  barberías que se toman su negocio en serio.
+                </p>
+              </Reveal>
+              <Reveal delay={300}>
+                <div className="mt-10 flex flex-wrap items-center gap-3">
+                  <CtaPill href="/register" variant="ink">
+                    Crear mi barbería
+                  </CtaPill>
+                  <CtaPill href="/login" variant="ghost">
+                    Ya tengo cuenta
+                  </CtaPill>
+                </div>
+                <p className="mt-5 text-xs text-[#241C14]/50">
+                  Gratis para siempre en el plan básico · Sin tarjeta de
+                  crédito
+                </p>
+              </Reveal>
+            </div>
 
-            <Reveal delay={100}>
-              <h1 className="mx-auto mt-8 max-w-4xl font-heading text-5xl font-medium leading-[1.05] tracking-[-0.02em] sm:text-7xl">
-                Tu barbería,{" "}
-                <span className="italic text-amber-700">afilada</span> de punta
-                a punta
-              </h1>
-            </Reveal>
+            <div className="relative lg:col-span-6">
+              <Reveal delay={250}>
+                <div className={`lg:rotate-1 lg:transition-transform lg:duration-700 ${EASE} lg:hover:rotate-0`}>
+                  <AgendaMock />
+                </div>
+              </Reveal>
 
-            <Reveal delay={200}>
-              <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-[#241C14]/60 sm:text-lg">
-                Agenda, reservas online, caja, inventario y fidelización en una
-                sola plataforma rápida, elegante y sin complicaciones.
-              </p>
-            </Reveal>
+              <Reveal delay={450}>
+                <div className="absolute -left-2 top-6 w-52 -rotate-3 rounded-2xl border border-black/10 bg-white p-4 shadow-[0_24px_50px_-24px_rgba(38,28,20,0.45)] motion-safe:animate-[orb-float_12s_ease-in-out_infinite] sm:-left-6">
+                  <p className="text-[10px] font-medium uppercase tracking-[0.15em] text-[#241C14]/50">
+                    Nueva reserva
+                  </p>
+                  <p className="mt-1.5 text-sm font-medium">
+                    Corte + barba · 10:00
+                  </p>
+                  <p className="mt-0.5 text-xs text-[#241C14]/60">
+                    Camila — desde tu enlace público
+                  </p>
+                </div>
+              </Reveal>
 
-            <Reveal delay={300}>
-              <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                <CtaPill href="/register" variant="ink">
-                  Crear mi barbería
-                </CtaPill>
-                <CtaPill href="/login" variant="ghost">
-                  Ya tengo cuenta
-                </CtaPill>
-              </div>
-              <p className="mt-5 text-xs text-[#241C14]/50">
-                Gratis para siempre en el plan básico · Sin tarjeta de crédito
-              </p>
-            </Reveal>
-
-            <Reveal delay={400}>
-              <AgendaMock />
-            </Reveal>
+              <Reveal delay={550}>
+                <div className="absolute -bottom-6 right-0 w-44 rotate-2 rounded-2xl border border-black/10 bg-[#241C14] p-4 text-[#FDFBF7] shadow-[0_24px_50px_-24px_rgba(38,28,20,0.55)] sm:-right-4">
+                  <p className="text-[10px] font-medium uppercase tracking-[0.15em] text-[#FDFBF7]/50">
+                    Caja de hoy
+                  </p>
+                  <p className="mt-1.5 font-heading text-xl font-medium">
+                    $ 850.000
+                  </p>
+                  <p className="mt-0.5 text-xs text-emerald-300">
+                    Arqueo cuadrado
+                  </p>
+                </div>
+              </Reveal>
+            </div>
           </div>
         </section>
 
-        {/* ── Marquee ──────────────────────────────────────────── */}
-        <section
-          aria-hidden
-          className="relative overflow-hidden border-y border-black/5 py-6 [mask-image:linear-gradient(to_right,transparent,black_15%,black_85%,transparent)]"
-        >
-          <div className="flex w-max motion-safe:animate-[marquee_45s_linear_infinite]">
-            {[0, 1].map((copy) => (
-              <div key={copy} className="flex shrink-0 items-center">
-                {MARQUEE_ITEMS.map((item) => (
-                  <span
-                    key={`${copy}-${item}`}
-                    className="flex items-center gap-8 pr-8 font-heading text-sm uppercase tracking-[0.25em] text-[#241C14]/40"
-                  >
-                    {item}
-                    <span className="h-1 w-1 rounded-full bg-amber-600/70" />
-                  </span>
-                ))}
-              </div>
+        {/* ── Stats band ───────────────────────────────────────── */}
+        <section className="border-y border-black/10">
+          <div className="mx-auto grid max-w-6xl divide-y divide-black/10 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+            {STATS.map((s, i) => (
+              <Reveal key={s.value} delay={i * 100}>
+                <div className="px-6 py-10 sm:py-12">
+                  <p className="font-heading text-4xl font-medium tracking-tight sm:text-5xl">
+                    {s.value}{" "}
+                    <span className="text-xl italic text-amber-700 sm:text-2xl">
+                      {s.suffix}
+                    </span>
+                  </p>
+                  <p className="mt-2 text-sm text-[#241C14]/60">{s.label}</p>
+                </div>
+              </Reveal>
             ))}
           </div>
         </section>
 
-        {/* ── Cómo funciona ────────────────────────────────────── */}
-        <section className="px-4 py-24 sm:py-32">
+        {/* ── Features: índice editorial ───────────────────────── */}
+        <section id="funciones" className="scroll-mt-28 px-4 py-24 sm:py-32">
           <div className="mx-auto max-w-6xl">
-            <Reveal className="text-center">
-              <span className="inline-block rounded-full border border-black/10 bg-white/60 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-[#241C14]/70">
-                Cómo funciona
-              </span>
-              <h2 className="mx-auto mt-6 max-w-2xl font-heading text-3xl font-medium tracking-[-0.02em] sm:text-5xl">
-                Listo en tres pasos
-              </h2>
-            </Reveal>
+            <div className="grid gap-6 md:grid-cols-12 md:items-end">
+              <Reveal className="md:col-span-7">
+                <SectionMeta index="01" label="Funciones" />
+                <h2 className="mt-6 font-heading text-3xl font-medium tracking-[-0.02em] sm:text-5xl">
+                  Todo lo que tu negocio necesita
+                </h2>
+              </Reveal>
+              <Reveal delay={150} className="md:col-span-5">
+                <p className="max-w-sm text-sm leading-relaxed text-[#241C14]/60 md:ml-auto">
+                  Sin integraciones frágiles ni cinco suscripciones distintas:
+                  cada módulo comparte los mismos datos, en tiempo real.
+                </p>
+              </Reveal>
+            </div>
 
-            <div className="mt-16 grid gap-10 md:grid-cols-3 md:gap-6">
-              {STEPS.map((s, i) => (
-                <Reveal key={s.n} delay={i * 120}>
-                  <div className="border-t border-black/15 pt-6">
-                    <span className="font-mono text-sm text-amber-700">
-                      {s.n}
+            <div className="mt-16">
+              {FEATURES.map((f, i) => (
+                <Reveal key={f.n} delay={i * 60}>
+                  <div
+                    className={`group grid grid-cols-[auto_1fr] items-baseline gap-x-6 gap-y-2 border-t border-black/10 py-7 transition-colors duration-500 ${EASE} last:border-b hover:bg-white/70 md:grid-cols-12 md:gap-x-8 md:px-4`}
+                  >
+                    <span className="font-mono text-xs text-amber-700 md:col-span-1">
+                      {f.n}
                     </span>
-                    <h3 className="mt-4 font-heading text-xl font-medium tracking-tight">
-                      {s.title}
+                    <h3 className="font-heading text-2xl font-medium tracking-tight sm:text-3xl md:col-span-4">
+                      {f.title}
                     </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-[#241C14]/60">
-                      {s.desc}
+                    <p className="col-start-2 max-w-lg text-sm leading-relaxed text-[#241C14]/60 md:col-span-6 md:col-start-auto">
+                      {f.description}
                     </p>
+                    <span
+                      className={`hidden h-9 w-9 items-center justify-center self-center rounded-full border border-black/10 bg-black/5 opacity-0 transition-all duration-500 ${EASE} group-hover:translate-x-1 group-hover:opacity-100 md:col-span-1 md:flex md:justify-self-end`}
+                    >
+                      <IconArrow />
+                    </span>
                   </div>
                 </Reveal>
               ))}
@@ -266,34 +299,49 @@ export default async function LandingPage() {
           </div>
         </section>
 
-        {/* ── Features (bento) ─────────────────────────────────── */}
-        <section id="funciones" className="scroll-mt-28 px-4 py-24 sm:py-36">
-          <div className="mx-auto max-w-6xl">
-            <Reveal className="text-center">
-              <span className="inline-block rounded-full border border-black/10 bg-white/60 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-[#241C14]/70">
-                Funciones
-              </span>
-              <h2 className="mx-auto mt-6 max-w-2xl font-heading text-3xl font-medium tracking-[-0.02em] sm:text-5xl">
-                Todo lo que tu negocio necesita
-              </h2>
-            </Reveal>
+        {/* ── Cómo funciona: split sticky ──────────────────────── */}
+        <section className="border-t border-black/5 px-4 py-24 sm:py-32">
+          <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-12">
+            <div className="md:col-span-5">
+              <div className="md:sticky md:top-32">
+                <Reveal>
+                  <SectionMeta index="02" label="Cómo funciona" />
+                  <h2 className="mt-6 font-heading text-3xl font-medium tracking-[-0.02em] sm:text-5xl">
+                    Listo en{" "}
+                    <span className="italic text-amber-700">tres</span> pasos
+                  </h2>
+                  <p className="mt-6 max-w-sm text-sm leading-relaxed text-[#241C14]/60">
+                    Del registro a recibir tu primera reserva online el mismo
+                    día. Sin instalación, sin consultores, sin curva de
+                    aprendizaje.
+                  </p>
+                  <div className="mt-8">
+                    <CtaPill href="/register" variant="ghost">
+                      Empezar ahora
+                    </CtaPill>
+                  </div>
+                </Reveal>
+              </div>
+            </div>
 
-            <div className="mt-16 grid grid-cols-1 gap-4 md:grid-cols-12">
-              {FEATURES.map((f, i) => (
-                <Reveal key={f.title} delay={i * 80} className={f.span}>
-                  <BezelCard className="group h-full">
-                    <span
-                      className={`flex h-11 w-11 items-center justify-center rounded-full border transition-transform duration-700 ${EASE} group-hover:scale-110 ${f.tint}`}
-                    >
-                      {f.icon}
-                    </span>
-                    <h3 className="mt-6 font-heading text-lg font-medium tracking-tight">
-                      {f.title}
-                    </h3>
-                    <p className="mt-2 max-w-md text-sm leading-relaxed text-[#241C14]/60">
-                      {f.description}
-                    </p>
-                  </BezelCard>
+            <div className="space-y-4 md:col-span-7">
+              {STEPS.map((s, i) => (
+                <Reveal key={s.n} delay={i * 120}>
+                  <div className="rounded-[1.75rem] border border-black/10 bg-white p-1.5 shadow-[0_16px_40px_-28px_rgba(38,28,20,0.35)]">
+                    <div className="flex gap-6 rounded-[calc(1.75rem-0.375rem)] p-6 sm:p-8">
+                      <span className="font-heading text-4xl font-medium italic text-amber-700/70 sm:text-5xl">
+                        {s.n}
+                      </span>
+                      <div className="pt-1">
+                        <h3 className="font-heading text-xl font-medium tracking-tight">
+                          {s.title}
+                        </h3>
+                        <p className="mt-2 text-sm leading-relaxed text-[#241C14]/60">
+                          {s.desc}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </Reveal>
               ))}
             </div>
@@ -303,17 +351,23 @@ export default async function LandingPage() {
         {/* ── Planes ───────────────────────────────────────────── */}
         <section
           id="planes"
-          className="scroll-mt-28 border-t border-black/5 px-4 py-24 sm:py-36"
+          className="scroll-mt-28 border-t border-black/5 px-4 py-24 sm:py-32"
         >
           <div className="mx-auto max-w-6xl">
-            <Reveal className="text-center">
-              <span className="inline-block rounded-full border border-black/10 bg-white/60 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-[#241C14]/70">
-                Precios
-              </span>
-              <h2 className="mx-auto mt-6 max-w-2xl font-heading text-3xl font-medium tracking-[-0.02em] sm:text-5xl">
-                Planes simples y transparentes
-              </h2>
-            </Reveal>
+            <div className="grid gap-6 md:grid-cols-12 md:items-end">
+              <Reveal className="md:col-span-7">
+                <SectionMeta index="03" label="Precios" />
+                <h2 className="mt-6 font-heading text-3xl font-medium tracking-[-0.02em] sm:text-5xl">
+                  Planes simples y transparentes
+                </h2>
+              </Reveal>
+              <Reveal delay={150} className="md:col-span-5">
+                <p className="max-w-sm text-sm leading-relaxed text-[#241C14]/60 md:ml-auto">
+                  Empieza gratis y crece cuando tu barbería crezca. Cambia de
+                  plan en cualquier momento.
+                </p>
+              </Reveal>
+            </div>
 
             <div className="mt-16 grid gap-4 md:grid-cols-3">
               {(plans ?? []).map((p, i) => {
@@ -323,7 +377,7 @@ export default async function LandingPage() {
                     <div
                       className={`flex h-full flex-col rounded-[2rem] border p-1.5 transition-all duration-700 ${EASE} hover:-translate-y-1 ${
                         pro
-                          ? "border-amber-600/30 bg-amber-100/60 shadow-[0_24px_60px_-32px_rgba(180,83,9,0.45)]"
+                          ? "border-amber-600/30 bg-amber-100/60 shadow-[0_24px_60px_-32px_rgba(180,83,9,0.45)] md:-translate-y-3 md:hover:-translate-y-4"
                           : "border-black/10 bg-black/[0.03]"
                       }`}
                     >
@@ -401,68 +455,124 @@ export default async function LandingPage() {
           </div>
         </section>
 
-        {/* ── FAQ ──────────────────────────────────────────────── */}
+        {/* ── FAQ: split ───────────────────────────────────────── */}
         <section
           id="faq"
-          className="scroll-mt-28 border-t border-black/5 px-4 py-24 sm:py-36"
+          className="scroll-mt-28 border-t border-black/5 px-4 py-24 sm:py-32"
         >
-          <div className="mx-auto max-w-2xl">
-            <Reveal className="text-center">
-              <span className="inline-block rounded-full border border-black/10 bg-white/60 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-[#241C14]/70">
-                FAQ
-              </span>
-              <h2 className="mt-6 font-heading text-3xl font-medium tracking-[-0.02em] sm:text-4xl">
-                Preguntas frecuentes
-              </h2>
-            </Reveal>
-            <Reveal delay={150} className="mt-12">
+          <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-12">
+            <div className="md:col-span-5">
+              <div className="md:sticky md:top-32">
+                <Reveal>
+                  <SectionMeta index="04" label="Preguntas" />
+                  <h2 className="mt-6 font-heading text-3xl font-medium tracking-[-0.02em] sm:text-5xl">
+                    Lo que todos preguntan
+                  </h2>
+                  <p className="mt-6 max-w-sm text-sm leading-relaxed text-[#241C14]/60">
+                    ¿Tienes otra duda? Crea tu cuenta gratis y explora la
+                    plataforma por dentro: es la forma más rápida de saber si
+                    es para ti.
+                  </p>
+                </Reveal>
+              </div>
+            </div>
+            <Reveal delay={150} className="md:col-span-7">
               <FaqAccordion items={FAQS} />
             </Reveal>
           </div>
         </section>
 
-        {/* ── CTA final ────────────────────────────────────────── */}
-        <section className="relative overflow-hidden px-4 py-28 sm:py-40">
+        {/* ── CTA final: banda invertida ───────────────────────── */}
+        <section className="relative overflow-hidden bg-[#241C14] px-4 py-28 text-[#FDFBF7] sm:py-36">
           <div aria-hidden className="pointer-events-none absolute inset-0">
-            <div className="absolute bottom-[-14rem] left-1/2 h-[30rem] w-[30rem] -translate-x-1/2 rounded-full bg-amber-200/60 blur-[130px]" />
+            <div className="absolute -top-40 left-1/2 h-[30rem] w-[30rem] -translate-x-1/2 rounded-full bg-amber-500/15 blur-[130px]" />
           </div>
-          <Reveal className="relative mx-auto max-w-3xl text-center">
-            <h2 className="font-heading text-3xl font-medium tracking-[-0.02em] sm:text-5xl">
-              Empieza hoy, configura tu barbería en{" "}
-              <span className="italic text-amber-700">minutos</span>
-            </h2>
-            <p className="mx-auto mt-4 max-w-md text-[#241C14]/60">
-              Sin tarjeta, sin instalación. Tu agenda y tu página de reservas
-              quedan listas el mismo día.
-            </p>
-            <div className="mt-10 flex justify-center">
-              <CtaPill href="/register" variant="ink">
-                Crear cuenta gratis
-              </CtaPill>
-            </div>
-          </Reveal>
+          <div className="relative mx-auto max-w-6xl">
+            <Reveal>
+              <p className="flex items-center gap-3 font-mono text-xs text-amber-300">
+                (05)
+                <span className="uppercase tracking-[0.25em] text-[#FDFBF7]/50">
+                  Empieza hoy
+                </span>
+              </p>
+              <h2 className="mt-8 max-w-3xl font-heading text-4xl font-medium leading-[1.05] tracking-[-0.02em] sm:text-6xl">
+                Tu barbería lista en{" "}
+                <span className="italic text-amber-300">minutos,</span> no en
+                semanas
+              </h2>
+            </Reveal>
+            <Reveal delay={150}>
+              <div className="mt-10 flex flex-wrap items-center gap-6">
+                <CtaPill href="/register" variant="cream">
+                  Crear cuenta gratis
+                </CtaPill>
+                <p className="max-w-xs text-sm text-[#FDFBF7]/50">
+                  Sin tarjeta, sin instalación. Tu agenda y tu página de
+                  reservas quedan listas el mismo día.
+                </p>
+              </div>
+            </Reveal>
+          </div>
         </section>
       </main>
 
+      {/* ── Footer editorial ───────────────────────────────────── */}
       <footer className="border-t border-black/5">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-4 py-10 text-sm text-[#241C14]/50 sm:flex-row">
-          <p className="flex items-center gap-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-amber-600/70" />©{" "}
-            {new Date().getFullYear()} BarberSaaS
-          </p>
-          <div className="flex gap-6">
-            <Link
-              href="/login"
-              className="transition-colors duration-300 hover:text-[#241C14]"
-            >
-              Iniciar sesión
-            </Link>
-            <Link
-              href="/register"
-              className="transition-colors duration-300 hover:text-[#241C14]"
-            >
-              Registrarse
-            </Link>
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="grid gap-10 py-16 md:grid-cols-12">
+            <div className="md:col-span-6">
+              <p className="flex items-center gap-2 font-heading text-2xl font-medium tracking-tight">
+                <span className="h-2 w-2 rounded-full bg-amber-600" />
+                BarberSaaS
+              </p>
+              <p className="mt-3 max-w-xs text-sm leading-relaxed text-[#241C14]/60">
+                Gestión integral para barberías: el oficio es tuyo, el orden es
+                nuestro.
+              </p>
+            </div>
+            <div className="md:col-span-3">
+              <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-[#241C14]/50">
+                Producto
+              </p>
+              <ul className="mt-4 space-y-2.5 text-sm text-[#241C14]/70">
+                <li>
+                  <a href="#funciones" className="hover:text-[#241C14]">
+                    Funciones
+                  </a>
+                </li>
+                <li>
+                  <a href="#planes" className="hover:text-[#241C14]">
+                    Planes
+                  </a>
+                </li>
+                <li>
+                  <a href="#faq" className="hover:text-[#241C14]">
+                    Preguntas
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div className="md:col-span-3">
+              <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-[#241C14]/50">
+                Cuenta
+              </p>
+              <ul className="mt-4 space-y-2.5 text-sm text-[#241C14]/70">
+                <li>
+                  <Link href="/login" className="hover:text-[#241C14]">
+                    Iniciar sesión
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/register" className="hover:text-[#241C14]">
+                    Crear cuenta
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div className="flex flex-col items-center justify-between gap-2 border-t border-black/5 py-6 text-xs text-[#241C14]/50 sm:flex-row">
+            <p>© {new Date().getFullYear()} BarberSaaS</p>
+            <p className="italic">Hecho para el oficio.</p>
           </div>
         </div>
       </footer>
@@ -478,45 +588,32 @@ function CtaPill({
   children,
 }: {
   href: string;
-  variant: "ink" | "ghost";
+  variant: "ink" | "ghost" | "cream";
   children: React.ReactNode;
 }) {
+  const styles = {
+    ink: "bg-[#241C14] text-[#FDFBF7] shadow-[0_16px_36px_-16px_rgba(38,28,20,0.5)] hover:bg-black hover:shadow-[0_20px_44px_-16px_rgba(38,28,20,0.6)]",
+    ghost: "border border-black/15 bg-white/70 text-[#241C14] hover:bg-white",
+    cream: "bg-[#FDFBF7] text-[#241C14] hover:bg-white",
+  } as const;
+  const circle = {
+    ink: "bg-white/15",
+    ghost: "bg-black/5",
+    cream: "bg-black/10",
+  } as const;
+
   return (
     <Link
       href={href}
-      className={`group inline-flex items-center gap-3 rounded-full py-2.5 pl-6 pr-2.5 text-sm font-medium transition-all duration-500 ${EASE} active:scale-[0.98] ${
-        variant === "ink"
-          ? "bg-[#241C14] text-[#FDFBF7] shadow-[0_16px_36px_-16px_rgba(38,28,20,0.5)] hover:bg-black hover:shadow-[0_20px_44px_-16px_rgba(38,28,20,0.6)]"
-          : "border border-black/15 bg-white/70 text-[#241C14] hover:bg-white"
-      }`}
+      className={`group inline-flex items-center gap-3 rounded-full py-2.5 pl-6 pr-2.5 text-sm font-medium transition-all duration-500 ${EASE} active:scale-[0.98] ${styles[variant]}`}
     >
       {children}
       <span
-        className={`flex h-8 w-8 items-center justify-center rounded-full transition-transform duration-500 ${EASE} group-hover:-translate-y-[1px] group-hover:translate-x-0.5 group-hover:scale-105 ${
-          variant === "ink" ? "bg-white/15" : "bg-black/5"
-        }`}
+        className={`flex h-8 w-8 items-center justify-center rounded-full transition-transform duration-500 ${EASE} group-hover:-translate-y-[1px] group-hover:translate-x-0.5 group-hover:scale-105 ${circle[variant]}`}
       >
         <IconArrow />
       </span>
     </Link>
-  );
-}
-
-function BezelCard({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <div
-      className={`rounded-[2rem] border border-black/10 bg-black/[0.03] p-1.5 transition-all duration-700 ${EASE} hover:-translate-y-1 hover:border-amber-600/30 ${className ?? ""}`}
-    >
-      <div className="h-full rounded-[calc(2rem-0.375rem)] bg-white p-7 shadow-[0_16px_40px_-28px_rgba(38,28,20,0.35)] sm:p-8">
-        {children}
-      </div>
-    </div>
   );
 }
 
@@ -591,7 +688,7 @@ function AgendaMock() {
   ];
 
   return (
-    <div className="relative mx-auto mt-20 max-w-4xl rounded-[2rem] border border-black/10 bg-black/[0.03] p-2 text-left">
+    <div className="relative rounded-[2rem] border border-black/10 bg-black/[0.03] p-2 text-left">
       <div className="rounded-[calc(2rem-0.5rem)] border border-black/5 bg-white shadow-[0_24px_60px_-32px_rgba(38,28,20,0.4)]">
         <div className="flex items-center justify-between border-b border-black/5 px-5 py-3.5">
           <div className="flex items-center gap-1.5">
@@ -634,8 +731,6 @@ function AgendaMock() {
   );
 }
 
-/* ── Iconos (trazo fino) ──────────────────────────────────────── */
-
 function IconArrow() {
   return (
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
@@ -644,115 +739,6 @@ function IconArrow() {
         stroke="currentColor"
         strokeWidth="1.25"
         strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function IconCalendar() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
-      <rect
-        x="2.5"
-        y="4"
-        width="15"
-        height="13.5"
-        rx="3"
-        stroke="currentColor"
-        strokeWidth="1.1"
-      />
-      <path
-        d="M2.5 8.5h15M6.5 2.5v3M13.5 2.5v3"
-        stroke="currentColor"
-        strokeWidth="1.1"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
-function IconGlobe() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
-      <circle cx="10" cy="10" r="7.5" stroke="currentColor" strokeWidth="1.1" />
-      <path
-        d="M2.5 10h15M10 2.5c-2.2 2-3.3 4.6-3.3 7.5s1.1 5.5 3.3 7.5c2.2-2 3.3-4.6 3.3-7.5S12.2 4.5 10 2.5Z"
-        stroke="currentColor"
-        strokeWidth="1.1"
-      />
-    </svg>
-  );
-}
-
-function IconCard() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
-      <rect
-        x="2.5"
-        y="4.5"
-        width="15"
-        height="11"
-        rx="2.5"
-        stroke="currentColor"
-        strokeWidth="1.1"
-      />
-      <path
-        d="M2.5 8.5h15M5.5 12h3"
-        stroke="currentColor"
-        strokeWidth="1.1"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
-function IconBox() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
-      <path
-        d="m10 2.5 6.5 3.75v7.5L10 17.5l-6.5-3.75v-7.5L10 2.5Z"
-        stroke="currentColor"
-        strokeWidth="1.1"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M3.5 6.25 10 10l6.5-3.75M10 10v7.5"
-        stroke="currentColor"
-        strokeWidth="1.1"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function IconChart() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
-      <path
-        d="M3 17V3M3 17h14"
-        stroke="currentColor"
-        strokeWidth="1.1"
-        strokeLinecap="round"
-      />
-      <path
-        d="m5.5 12.5 3.5-4 3 2.5 4.5-5.5"
-        stroke="currentColor"
-        strokeWidth="1.1"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function IconSpark() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
-      <path
-        d="M10 2.5c.6 3.9 3.6 6.9 7.5 7.5-3.9.6-6.9 3.6-7.5 7.5-.6-3.9-3.6-6.9-7.5-7.5 3.9-.6 6.9-3.6 7.5-7.5Z"
-        stroke="currentColor"
-        strokeWidth="1.1"
         strokeLinejoin="round"
       />
     </svg>
