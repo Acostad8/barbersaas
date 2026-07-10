@@ -126,7 +126,7 @@ export default async function LandingPage() {
     }).format(n);
 
   return (
-    <div className="min-h-[100dvh] overflow-x-clip bg-[#050505] text-white selection:bg-amber-300 selection:text-black">
+    <div className="min-h-[100dvh] overflow-x-clip bg-[#050505] font-body text-white selection:bg-amber-300 selection:text-black">
       <div
         aria-hidden
         className="pointer-events-none fixed inset-0 z-10 opacity-[0.035] mix-blend-soft-light"
