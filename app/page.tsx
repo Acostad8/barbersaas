@@ -126,7 +126,7 @@ export default async function LandingPage() {
     }).format(n);
 
   return (
-    <div className="min-h-[100dvh] bg-[#050505] text-white selection:bg-amber-300 selection:text-black">
+    <div className="min-h-[100dvh] overflow-x-clip bg-[#050505] text-white selection:bg-amber-300 selection:text-black">
       <div
         aria-hidden
         className="pointer-events-none fixed inset-0 z-10 opacity-[0.035] mix-blend-soft-light"
@@ -190,7 +190,7 @@ export default async function LandingPage() {
         {/* ── Marquee ──────────────────────────────────────────── */}
         <section
           aria-hidden
-          className="relative border-y border-white/5 py-6 [mask-image:linear-gradient(to_right,transparent,black_15%,black_85%,transparent)]"
+          className="relative overflow-hidden border-y border-white/5 py-6 [mask-image:linear-gradient(to_right,transparent,black_15%,black_85%,transparent)]"
         >
           <div className="flex w-max motion-safe:animate-[marquee_45s_linear_infinite]">
             {[0, 1].map((copy) => (
@@ -206,6 +206,54 @@ export default async function LandingPage() {
                 ))}
               </div>
             ))}
+          </div>
+        </section>
+
+        {/* ── Cómo funciona ────────────────────────────────────── */}
+        <section className="px-4 py-24 sm:py-32">
+          <div className="mx-auto max-w-6xl">
+            <Reveal className="text-center">
+              <span className="inline-block rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-white/60">
+                Cómo funciona
+              </span>
+              <h2 className="mx-auto mt-6 max-w-2xl font-heading text-3xl font-semibold tracking-[-0.02em] sm:text-5xl">
+                Listo en tres pasos
+              </h2>
+            </Reveal>
+
+            <div className="mt-16 grid gap-10 md:grid-cols-3 md:gap-6">
+              {[
+                {
+                  n: "01",
+                  title: "Crea tu barbería",
+                  desc: "Regístrate y configura tu negocio y tus sedes en minutos, sin tarjeta de crédito.",
+                },
+                {
+                  n: "02",
+                  title: "Configura tu equipo",
+                  desc: "Servicios, precios, comisiones y horarios de cada barbero, todo desde el panel.",
+                },
+                {
+                  n: "03",
+                  title: "Comparte tu enlace",
+                  desc: "Tus clientes reservan online con disponibilidad real y tú lo controlas todo.",
+                },
+              ].map((s, i) => (
+                <Reveal key={s.n} delay={i * 120}>
+                  <div className="border-t border-white/10 pt-6">
+                    <span className="font-mono text-sm text-amber-300/80">
+                      {s.n}
+                    </span>
+                    <h3 className="mt-4 font-heading text-xl font-medium tracking-tight">
+                      {s.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-white/50">
+                      {s.desc}
+                    </p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -225,7 +273,7 @@ export default async function LandingPage() {
               {FEATURES.map((f, i) => (
                 <Reveal key={f.title} delay={i * 80} className={f.span}>
                   <BezelCard className="group h-full">
-                    <span className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-amber-200/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)]">
+                    <span className={`flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-amber-200/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] transition-all duration-700 ${EASE} group-hover:border-amber-300/30 group-hover:text-amber-300`}>
                       {f.icon}
                     </span>
                     <h3 className="mt-6 font-heading text-lg font-medium tracking-tight">
@@ -451,7 +499,7 @@ function BezelCard({
 }) {
   return (
     <div
-      className={`rounded-[2rem] border border-white/10 bg-white/[0.03] p-1.5 transition-transform duration-700 ${EASE} hover:-translate-y-1 ${className ?? ""}`}
+      className={`rounded-[2rem] border border-white/10 bg-white/[0.03] p-1.5 transition-all duration-700 ${EASE} hover:-translate-y-1 hover:border-amber-300/20 ${className ?? ""}`}
     >
       <div className="h-full rounded-[calc(2rem-0.375rem)] bg-[#0a0a0a] p-7 shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)] sm:p-8">
         {children}
