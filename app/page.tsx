@@ -8,7 +8,7 @@ import { FaqAccordion } from "@/components/landing/FaqAccordion";
 export const metadata: Metadata = {
   title: "BarberSaaS — Gestión integral para barberías",
   description:
-    "Agenda inteligente, reservas online, punto de venta, inventario y fidelización para tu barbería. Empieza gratis.",
+    "Agenda inteligente, reservas online, punto de venta, inventario y fidelización para tu barbería. Empieza gratis!!",
   keywords: [
     "software barbería",
     "agenda barbería",
