@@ -597,8 +597,7 @@ export default async function LandingPage() {
             </div>
           </div>
           <div className="flex flex-col items-center justify-between gap-2 border-t border-black/5 py-6 text-xs text-[#241C14]/50 dark:border-white/5 dark:text-[#F2EAE0]/50 sm:flex-row">
-            <p>© {new Date().getFullYear()} BarberSaaS</p>
-            <p className="italic">Hecho para el oficio.</p>
+            <p>© {new Date().getFullYear()} BarberSaaS · Hecho para el oficio.</p>
           </div>
         </div>
       </footer>
