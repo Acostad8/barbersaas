@@ -31,6 +31,7 @@ import { cn } from "@/lib/utils";
 export function LoginForm() {
   const [serverError, setServerError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   const {
@@ -52,9 +53,10 @@ export function LoginForm() {
   };
 
   return (
-    <Card className="w-full max-w-md border-border/60 shadow-xl shadow-black/5 backdrop-blur-sm">
+    <Card className="relative w-full max-w-md border-border/60 shadow-xl shadow-black/5 backdrop-blur-sm overflow-hidden">
+      <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-primary/80 via-primary to-primary/80" aria-hidden />
       <CardHeader className="space-y-4 pb-6">
-        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
+        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm ring-1 ring-primary/20">
           <Scissors className="h-5 w-5" aria-hidden />
         </div>
         <div className="space-y-1.5">
@@ -148,10 +150,27 @@ export function LoginForm() {
             )}
           </div>
 
-          <label className="flex cursor-pointer items-center gap-2.5 text-sm text-muted-foreground select-none">
+          <label className="flex cursor-pointer items-center gap-2.5 text-sm text-muted-foreground select-none group" onClick={() => setRememberMe((v) => !v)}>
+            <div
+              className={cn(
+                "flex h-4 w-4 items-center justify-center rounded border transition-colors group-hover:border-primary/50",
+                rememberMe
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : "border-border bg-background"
+              )}
+            >
+              {rememberMe && (
+                <svg className="h-2.5 w-2.5" viewBox="0 0 12 12" fill="none" aria-hidden>
+                  <path d="M2.5 6L5 8.5L9.5 3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              )}
+            </div>
             <input
               type="checkbox"
-              className="h-4 w-4 rounded border-input accent-primary"
+              checked={rememberMe}
+              onChange={() => {}}
+              className="sr-only"
+              tabIndex={-1}
             />
             <span>Recordar sesión en este dispositivo</span>
           </label>
