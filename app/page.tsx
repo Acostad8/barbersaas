@@ -334,7 +334,7 @@ export default async function LandingPage() {
             <div className="space-y-4 md:col-span-7">
               {STEPS.map((s, i) => (
                 <Reveal key={s.n} delay={i * 120}>
-                  <div className="rounded-[1.75rem] border border-black/10 bg-white p-1.5 shadow-[0_16px_40px_-28px_rgba(38,28,20,0.35)] dark:border-white/10 dark:bg-[#16120E] dark:shadow-none">
+                  <div className={`rounded-[1.75rem] border border-black/10 bg-white p-1.5 shadow-[0_16px_40px_-28px_rgba(38,28,20,0.35)] transition-all duration-700 ${EASE} hover:-translate-y-1 hover:shadow-[0_24px_60px_-32px_rgba(38,28,20,0.45)] dark:border-white/10 dark:bg-[#16120E] dark:shadow-none dark:hover:bg-white/[0.07]`}>
                     <div className="flex gap-6 rounded-[calc(1.75rem-0.375rem)] p-6 sm:p-8">
                       <span className="font-heading text-4xl font-medium italic text-amber-700/70 dark:text-amber-400/70 sm:text-5xl">
                         {s.n}
