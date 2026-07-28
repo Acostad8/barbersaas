@@ -84,7 +84,7 @@ export default async function DashboardLayout({
               <ThemeToggle className="flex h-8 w-8 items-center justify-center rounded-full border border-border text-muted-foreground" />
               <form action={signOutAction}>
                 <Button variant="ghost" size="sm" type="submit">
-                  Salir
+                  Cerrar sesión
                 </Button>
               </form>
             </div>
