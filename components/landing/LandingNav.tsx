@@ -78,6 +78,8 @@ export function LandingNav() {
       </header>
 
       <div
+        aria-hidden={!open}
+        inert={!open}
         className={`fixed inset-0 z-30 flex flex-col justify-between bg-[#FDFBF7]/95 px-8 pb-10 pt-32 backdrop-blur-3xl transition-opacity duration-500 dark:bg-[#0C0A08]/95 sm:hidden ${
           open ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
