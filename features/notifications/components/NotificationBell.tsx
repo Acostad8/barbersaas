@@ -21,6 +21,8 @@ export function NotificationBell({
       <Button
         variant="ghost"
         size="sm"
+        aria-haspopup="menu"
+        aria-expanded={open}
         className="relative w-full justify-start"
         onClick={() => setOpen((v) => !v)}
       >
