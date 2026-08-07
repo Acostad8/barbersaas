@@ -152,9 +152,16 @@ export default async function LandingPage() {
         style={{ backgroundImage: NOISE_BG }}
       />
 
+      <a
+        href="#contenido"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-[#241C14] focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-[#FDFBF7] dark:focus:bg-[#F2EAE0] dark:focus:text-[#241C14]"
+      >
+        Pasar al contenido
+      </a>
+
       <LandingNav />
 
-      <main className="relative">
+      <main id="contenido" className="relative">
         {/* ── Hero: split editorial ────────────────────────────── */}
         <section className="relative overflow-hidden px-4 pb-20 pt-36 sm:pt-48 lg:pb-28">
           <div aria-hidden className="pointer-events-none absolute inset-0">
