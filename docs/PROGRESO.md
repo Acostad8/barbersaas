@@ -24,7 +24,7 @@
 | 14 | Analítica ejecutiva e IA | ✅ KPIs y heatmap (IA pendiente API key) |
 | 15 | Landing page pública | ✅ completa |
 
-## Fase 0 — Bootstrap
+## Fase 0 — Bootstrapppp
 
 - ✅ Proyecto Supabase existe: `barbersaas`, ref `zsroittxfvrtezhateue`,
   región us-west-2, Postgres 17, estado ACTIVE_HEALTHY (verificado vía MCP).
