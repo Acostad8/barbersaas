@@ -23,6 +23,10 @@ const jakarta = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: "BarberSaaS",
   description: "Gestión integral para barberías: agenda, clientes, POS y más.",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#FDFBF7" },
+    { media: "(prefers-color-scheme: dark)", color: "#0C0A08" },
+  ],
 };
 
 export default function RootLayout({
