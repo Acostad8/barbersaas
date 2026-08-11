@@ -605,6 +605,27 @@ export default async function LandingPage() {
           </div>
           <div className="flex flex-col items-center justify-between gap-2 border-t border-black/5 py-6 text-xs text-[#241C14]/50 dark:border-white/5 dark:text-[#F2EAE0]/50 sm:flex-row">
             <p>© {new Date().getFullYear()} BarberSaaS · Hecho para el oficio.</p>
+            <a
+              href="#contenido"
+              className="flex items-center gap-1.5 transition-colors hover:text-[#241C14] dark:hover:text-[#F2EAE0]"
+            >
+              Volver arriba
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 14 14"
+                fill="none"
+                aria-hidden
+              >
+                <path
+                  d="M11 3 3 11M3 5v6h6"
+                  stroke="currentColor"
+                  strokeWidth="1.25"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </a>
           </div>
         </div>
       </footer>
