@@ -229,8 +229,16 @@ export default async function LandingPage() {
 
               <Reveal delay={550}>
                 <div className="absolute -bottom-6 right-0 w-44 rotate-2 rounded-2xl border border-black/10 bg-[#241C14] p-4 text-[#FDFBF7] shadow-[0_24px_50px_-24px_rgba(38,28,20,0.55)] dark:border-white/10 dark:bg-[#F2EAE0] dark:text-[#241C14] sm:-right-4">
-                  <p className="text-[10px] font-medium uppercase tracking-[0.15em] text-[#FDFBF7]/50 dark:text-[#241C14]/50">
-                    Caja de hoy
+                  <p className="flex items-center justify-between gap-2">
+                    <span className="text-[10px] font-medium uppercase tracking-[0.15em] text-[#FDFBF7]/50 dark:text-[#241C14]/50">
+                      Caja de hoy
+                    </span>
+                    <span className="text-[10px] font-medium text-[#FDFBF7]/40 dark:text-[#241C14]/40">
+                      {new Date().toLocaleDateString("es-CO", {
+                        day: "numeric",
+                        month: "short",
+                      })}
+                    </span>
                   </p>
                   <p className="mt-1.5 font-heading text-xl font-medium">
                     $ 850.000
